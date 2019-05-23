@@ -1,5 +1,7 @@
 package com.example.myapp;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity
 
     private TextView textViewResult;
     private Button btnRequest;
+    private Button btnNext;
     private RequestQueue mQueue;
 
     @Override
@@ -62,6 +65,9 @@ public class MainActivity extends AppCompatActivity
         //CODE
         this.textViewResult = findViewById(R.id.result);
         this.btnRequest = findViewById(R.id.btnRequest);
+        this.btnNext = findViewById(R.id.btnNext);
+         //= findViewById(R.id.btnNext);
+
 
         this.mQueue = Volley.newRequestQueue(this);
 
@@ -76,7 +82,16 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ProfiloActivity.class));
+            }
+        });
+
     }
+
 
     @Override
     public void onBackPressed() {
@@ -110,6 +125,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -117,12 +133,26 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.home) {
+            startActivity(new Intent(MainActivity.this, MainActivity.class));
+
             // Handle the camera action
         } else if (id == R.id.profile) {
+            startActivity(new Intent(MainActivity.this, ProfiloActivity.class));
+
 
         } else if (id == R.id.serieTvPreferite) {
+            startActivity(new Intent(MainActivity.this, FavouriteSerieActivity.class));
+
 
         } else if (id == R.id.impostazioni) {
+            startActivity(new Intent(MainActivity.this, SettingActivity.class));
+
+        } else if (id == R.id.ricerca) {
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+
+        } else if (id == R.id.notifica) {
+            startActivity(new Intent(MainActivity.this, NotificationsActivity.class));
+
 
         } else if (id == R.id.nav_share) {
 
