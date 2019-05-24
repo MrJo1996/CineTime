@@ -40,6 +40,10 @@
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Invia Segnalazione" />
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/log_out_exit_24dp"
+                android:title="Logout" />
         </menu>
     </item>
 
