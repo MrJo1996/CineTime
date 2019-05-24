@@ -1,6 +1,5 @@
 package com.example.myapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -29,6 +28,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -78,7 +81,6 @@ public class MainActivity extends AppCompatActivity
 
                 /*Log.d("TEST","X " + String.valueOf(textViewResult));
                  */
-
             }
         });
 
@@ -155,9 +157,18 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_share) {
+            //TODO urlDownload da cambiare con quello che sarà il vero url
+            String urlDownload = "https://play.google.com/store/apps/details?id=com.supercell.brawlstars";
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            String object = "Serie Time";
+            String body = "Sto utilizzando l'app SerieTime, scaricala anche tu da " + urlDownload + " e lascia una recensione.";
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT,object);
+            shareIntent.putExtra(Intent.EXTRA_TEXT,body);
+            startActivity(Intent.createChooser(shareIntent,"Condividi"));
 
         } else if (id == R.id.nav_send) {
-
+            startActivity(new Intent(MainActivity.this, ContactActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
