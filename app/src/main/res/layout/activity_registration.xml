@@ -26,20 +26,16 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="match_parent"
-        android:layout_height="270dp"
+        android:layout_height="238dp"
         android:contentDescription="LogoImg"
-        app:srcCompat="@drawable/logo" />
-
-    <TextView
-        android:id="@+id/textLogInAppName"
+        app:srcCompat="@drawable/logo"
+        android:paddingBottom="40dp"
+        />
+    <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content"
+        android:src="@drawable/title" />
 
     <ScrollView
         android:id="@+id/login_form"
