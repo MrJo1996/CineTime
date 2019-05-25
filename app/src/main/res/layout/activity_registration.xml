@@ -40,7 +40,7 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="326dp">
+        android:layout_height="420dp">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -53,11 +53,30 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/username"
+                    android:id="@+id/nome"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:backgroundTint="@android:color/white"
-                    android:hint="@string/username_hint"
+                    android:hint="Nome"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textAlignment="viewStart"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    android:id="@+id/cognome"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:backgroundTint="@android:color/white"
+                    android:hint="Cognome"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
