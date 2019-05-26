@@ -23,5 +23,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="noDescription">Nessuna descrizione ufficiale trovata per tale tiolo.</string>
 
 </resources>

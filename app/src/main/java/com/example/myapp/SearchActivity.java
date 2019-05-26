@@ -2,8 +2,6 @@ package com.example.myapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,23 +21,28 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SearchActivity extends AppCompatActivity {
+
     private RequestQueue mQueue;
     JSONArray jsonArray;
 
     Context context;
     ListView listView;
-    String testTitolo[];
-    String testDesc[];
-    int images[] = {R.drawable.ic_favorite_black_24dp, R.drawable.ic_home_black_24dp, R.drawable.ic_menu_manage, R.drawable.ic_menu_manage, R.drawable.ic_menu_manage, R.drawable.ic_menu_manage};
+    EditText searchEditText;
+    ImageButton imgBtnSearch;
+
+    String titoli[];
+    String descrizioni[];
+    String postersUrl[];
+    String urlReq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +50,24 @@ public class SearchActivity extends AppCompatActivity {
         this.context = this;
         //fetch data code req
         this.mQueue = Volley.newRequestQueue(this);
-        //req
-        jsonParse();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         listView = findViewById(R.id.listViewSearch);
+        searchEditText = findViewById(R.id.searchEdiText);
+        imgBtnSearch = findViewById(R.id.btnSearch);
 
+        imgBtnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                urlReq = "https://api.themoviedb.org/3/search/tv?api_key=adf4e37d8d2e065dcfac0c49267b47db&language=it-IT&query=" + searchEditText.getText() + "&page=1";
+
+                //req
+                jsonParse();
+            }
+        });
+
+        Log.d("XXX", "input " + searchEditText.getText());
         //TODO set click su item listview, da spostare giu quando si fa la richiesta
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -71,13 +87,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void jsonParse() {
-        //url della chiamata
-        final String urlGOT = "https://api.themoviedb.org/3/search/tv?api_key=adf4e37d8d2e065dcfac0c49267b47db&query=Game%20of%20thrones";
-
         //CREAZIONE RICHIESTA
         //essendo un JSon ho bisogno di un handler della richiesta
         //(se era un array di JSon avrei usato un altro apposito -> JsonArrayRequest)
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlGOT, null,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlReq, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -86,21 +99,22 @@ public class SearchActivity extends AppCompatActivity {
                             //"results" è  il nome dell'array JSon che contiene tutti gli oggetti JSon
                             jsonArray = response.getJSONArray("results");
                             //setto dimensione singoli array
-                            testTitolo = new String[jsonArray.length()];
-                            testDesc = new String[jsonArray.length()];
-
+                            titoli = new String[jsonArray.length()];
+                            descrizioni = new String[jsonArray.length()];
+                            postersUrl = new String[jsonArray.length()];
                             //ciclo for per settare i nostri Json Oggetti
-                            for (int i = 0; i < testTitolo.length; i++) {
-                                testTitolo[i] = (jsonArray.getJSONObject(i).getString("name"));
-                                testDesc[i] = (jsonArray.getJSONObject(i).getString("overview"));
+                            for (int i = 0; i < titoli.length; i++) {
+                                titoli[i] = (jsonArray.getJSONObject(i).getString("name"));
+                                descrizioni[i] = (jsonArray.getJSONObject(i).getString("overview"));
+                                postersUrl[i] = (jsonArray.getJSONObject(i).getString("poster_path"));
 
-                                /* Log.d("STAMPA", "Titolo " + i + ":" + testTitolo[i] + "Descrizione " + i + ": " + testDesc[i]);
+                                /* Log.d("STAMPA", "Titolo " + i + ":" + titoli[i] + "Descrizione " + i + ": " + descrizioni[i]);
                                 textViewResult.append(jsonArray.getJSONObject(i).getString("name") + ", "
                                         + jsonArray.getJSONObject(i).getInt("id") + ", "
                                         + jsonArray.getJSONObject(i).getString("first_air_date") + "\n\n");*/
                             }
                             //creazione adapter per la view passandogli param durante la req, prima dava NPE(non avvalorava gli array)
-                            MySearchAdapter mySearchAdapter = new MySearchAdapter(context, testTitolo, testDesc, images);
+                            MySearchAdapter mySearchAdapter = new MySearchAdapter(context, titoli, descrizioni, postersUrl);
                             listView.setAdapter(mySearchAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -126,9 +140,10 @@ public class SearchActivity extends AppCompatActivity {
         Context context;
         String rTitle[];
         String rDesc[];
-        int rImgs[];
+        String rImgs[];
+        String urlImg;
 
-        MySearchAdapter(Context c, String title[], String description[], int imgs[]) {
+        MySearchAdapter(Context c, String title[], String description[], String imgs[]) {
             super(c, R.layout.row, R.id.titoloSearch, title);
             //avvaloro var internte con quelle passate così da assegnarle ai vari componenti della view
             this.context = c;
@@ -148,9 +163,20 @@ public class SearchActivity extends AppCompatActivity {
 
             //setting risorse della view
             myTitle.setText(rTitle[position]);
-            myDesc.setText(rDesc[position]);
-            images.setImageResource(rImgs[position]);
 
+            if (rDesc[position].isEmpty()) {
+                myDesc.setText(getString(R.string.noDescription));
+            } else {
+                myDesc.setText(rDesc[position]);
+
+            }
+
+            urlImg = "https://image.tmdb.org/t/p/w500" + rImgs[position];
+            if (rImgs[position].equals("null")) {
+                images.setImageResource(R.drawable.no_img_movie);
+            } else {
+                Picasso.get().load(urlImg).into(images);
+            }
             return row;
         }
     }
