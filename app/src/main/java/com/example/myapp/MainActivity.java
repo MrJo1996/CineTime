@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        //start new activity by btn
         btnNext = (Button) findViewById(R.id.btnNext);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
