@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         this.textViewResult = findViewById(R.id.result);
         this.btnRequest = findViewById(R.id.btnRequest);
         this.btnNext = findViewById(R.id.btnNext);
-         //= findViewById(R.id.btnNext);
+        //= findViewById(R.id.btnNext);
 
 
         this.mQueue = Volley.newRequestQueue(this);
@@ -164,12 +164,15 @@ public class MainActivity extends AppCompatActivity
             shareIntent.setType("text/plain");
             String object = "Serie Time";
             String body = "Sto utilizzando l'app SerieTime, scaricala anche tu da " + urlDownload + " e lascia una recensione.";
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT,object);
-            shareIntent.putExtra(Intent.EXTRA_TEXT,body);
-            startActivity(Intent.createChooser(shareIntent,"Condividi"));
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, object);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, body);
+            startActivity(Intent.createChooser(shareIntent, "Condividi"));
 
         } else if (id == R.id.nav_send) {
             startActivity(new Intent(MainActivity.this, ContactActivity.class));
+
+        } else if (id == R.id.trends) {
+            startActivity(new Intent(MainActivity.this, Trends.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

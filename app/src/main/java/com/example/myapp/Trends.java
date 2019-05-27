@@ -2,18 +2,14 @@ package com.example.myapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,19 +27,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SearchActivity extends AppCompatActivity {
+import java.util.Calendar;
 
+public class Trends extends AppCompatActivity {
     private RequestQueue mQueue;
     JSONArray jsonArray;
 
-    Context context;
     ListView listView;
-    EditText searchEditText;
-    ImageButton imgBtnSearch;
 
+    Context context;
     String titoli[];
     String descrizioni[];
     String postersUrl[];
+    String dataRelease[];
     String urlReq;
 
     @Override
@@ -54,40 +50,21 @@ public class SearchActivity extends AppCompatActivity {
         this.mQueue = Volley.newRequestQueue(this);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-        listView = findViewById(R.id.listViewSearch);
-        searchEditText = findViewById(R.id.searchEdiText);
-        imgBtnSearch = findViewById(R.id.btnSearch);
+        setContentView(R.layout.activity_trends);
 
-        imgBtnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                urlReq = "https://api.themoviedb.org/3/search/tv?api_key=adf4e37d8d2e065dcfac0c49267b47db&language=it-IT&query=" + searchEditText.getText() + "&page=1";
+        listView = findViewById(R.id.listViewTrends);
 
-                //req
-                jsonParse();
-            }
-        });
+     /*   Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
 
-        //TODO set click su item listview, da spostare giu quando si fa la richiesta
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    startActivity(new Intent(SearchActivity.this, ProfiloActivity.class));
-                    Toast.makeText(SearchActivity.this, titoli[0] + " " + descrizioni[0], Toast.LENGTH_SHORT).show();
-                }
-                if (position == 1) {
-                    Toast.makeText(SearchActivity.this, "descrizione 2", Toast.LENGTH_SHORT).show();
-                }
-                if (position == 2) {
-                    Toast.makeText(SearchActivity.this, "descrizione 3", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        //req trends
+        urlReq = "https://api.themoviedb.org/3/movie/upcoming?api_key=adf4e37d8d2e065dcfac0c49267b47db&language=it&region=it";
+        jsonParse();
+
     }
 
     private void jsonParse() {
+
         //CREAZIONE RICHIESTA
         //essendo un JSon ho bisogno di un handler della richiesta
         //(se era un array di JSon avrei usato un altro apposito -> JsonArrayRequest)
@@ -103,25 +80,17 @@ public class SearchActivity extends AppCompatActivity {
                             titoli = new String[jsonArray.length()];
                             descrizioni = new String[jsonArray.length()];
                             postersUrl = new String[jsonArray.length()];
+                            dataRelease = new String[jsonArray.length()];
                             //ciclo for per settare i nostri Json Oggetti
-                            if (jsonArray.length() != 0) {
-                                for (int i = 0; i < titoli.length; i++) {
-                                    titoli[i] = (jsonArray.getJSONObject(i).getString("name"));
-                                    descrizioni[i] = (jsonArray.getJSONObject(i).getString("overview"));
-                                    postersUrl[i] = (jsonArray.getJSONObject(i).getString("poster_path"));
-
-                                /* Log.d("STAMPA", "Titolo " + i + ":" + titoli[i] + "Descrizione " + i + ": " + descrizioni[i]);
-                                textViewResult.append(jsonArray.getJSONObject(i).getString("name") + ", "
-                                        + jsonArray.getJSONObject(i).getInt("id") + ", "
-                                        + jsonArray.getJSONObject(i).getString("first_air_date") + "\n\n");*/
-                                }
-                            } else {
-                                //Controllo se c'è o meno un risultato per la ricerca
-                                Toast.makeText(SearchActivity.this, "Nessun risultato trovato per tale titolo.", Toast.LENGTH_SHORT).show();
+                            for (int i = 0; i < titoli.length; i++) {
+                                titoli[i] = (jsonArray.getJSONObject(i).getString("title"));
+                                descrizioni[i] = (jsonArray.getJSONObject(i).getString("overview"));
+                                postersUrl[i] = (jsonArray.getJSONObject(i).getString("poster_path"));
+                                dataRelease[i] = (jsonArray.getJSONObject(i).getString("release_date"));
                             }
                             //creazione adapter per la view passandogli param durante la req, prima dava NPE(non avvalorava gli array)
-                            MySearchAdapter mySearchAdapter = new MySearchAdapter(context, titoli, descrizioni, postersUrl);
-                            listView.setAdapter(mySearchAdapter);
+                            MyTrendsAdapter myTrendsAdapter = new MyTrendsAdapter(context, titoli, descrizioni, postersUrl, dataRelease);
+                            listView.setAdapter(myTrendsAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -130,7 +99,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //risposta va male
-                Toast.makeText(SearchActivity.this, "Qualcosa è andato storto, controlla la tua connessione internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Trends.this, "Qualcosa è andato storto, controlla la tua connessione internet.", Toast.LENGTH_SHORT).show();
                 error.printStackTrace();
             }
         });
@@ -138,9 +107,7 @@ public class SearchActivity extends AppCompatActivity {
         mQueue.add(request);
     }
 
-    //handler assegnazione risorse alla view
-    // mettere qui i valori da passare alla visualizzazione
-    class MySearchAdapter extends ArrayAdapter {
+    class MyTrendsAdapter extends ArrayAdapter {
         //variabili d'appoggio INTERNE che saranno setatte in base a quelle che gli vengono passate come param
         //il passagio avviene durante l'esecuzione della req
         Context context;
@@ -148,24 +115,27 @@ public class SearchActivity extends AppCompatActivity {
         String rDesc[];
         String rImgs[];
         String urlImg;
+        String rilascioData[];
 
-        MySearchAdapter(Context c, String title[], String description[], String imgs[]) {
-            super(c, R.layout.row, R.id.titoloSearch, title);
+        MyTrendsAdapter(Context c, String title[], String description[], String imgs[], String data[]) {
+            super(c, R.layout.row_trends, R.id.titoloTrends, title);
             //avvaloro var internte con quelle passate così da assegnarle ai vari componenti della view
             this.context = c;
             this.rTitle = title;
             this.rDesc = description;
             this.rImgs = imgs;
+            this.rilascioData = data;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View row = layoutInflater.inflate(R.layout.row, parent, false);
+            View row_trends = layoutInflater.inflate(R.layout.row_trends, parent, false);
 
-            ImageView images = row.findViewById(R.id.immagineRicercaListView);
-            TextView myTitle = row.findViewById(R.id.titoloSearch);
-            TextView myDesc = row.findViewById(R.id.descrizioneSearch);
+            ImageView images = row_trends.findViewById(R.id.immagineTrends);
+            final TextView myTitle = row_trends.findViewById(R.id.titoloTrends);
+            TextView myDesc = row_trends.findViewById(R.id.descrizioneTrends);
+            final TextView myDate = row_trends.findViewById(R.id.release_data);
 
             //setting risorse della view
             myTitle.setText(rTitle[position]);
@@ -183,7 +153,35 @@ public class SearchActivity extends AppCompatActivity {
             } else {
                 Picasso.get().load(urlImg).into(images);
             }
-            return row;
+
+            myDate.setText("Data uscita: " + dataRelease[position]);
+
+            myDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Calendar beginTime = Calendar.getInstance();
+                    beginTime.set(Integer.parseInt(myDate.getText().toString().substring(13, 17)), Integer.parseInt(myDate.getText().toString().substring(19, 20)) - 1, Integer.parseInt(myDate.getText().toString().substring(21, 23)), 12, 30);
+
+                    Calendar endTime = Calendar.getInstance();
+                    endTime.set(Integer.parseInt(myDate.getText().toString().substring(13, 17)), Integer.parseInt(myDate.getText().toString().substring(19, 20)) - 1, Integer.parseInt(myDate.getText().toString().substring(21, 23)), 13, 0);
+
+                    Intent intent = new Intent(Intent.ACTION_INSERT)
+                            .setData(CalendarContract.Events.CONTENT_URI)
+                            .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                                    beginTime.getTimeInMillis())
+                            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
+                                    endTime.getTimeInMillis())
+                            .putExtra(CalendarContract.Events.TITLE, myTitle.getText())
+                            .putExtra(CalendarContract.Events.DESCRIPTION, myTitle.getText() + " è al cinema,corri a vederlo!")
+                            .putExtra(CalendarContract.Events.EVENT_LOCATION, "Cinema")
+                            .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+
+                    startActivity(intent);
+                }
+            });
+
+            return row_trends;
         }
     }
 }

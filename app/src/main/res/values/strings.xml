@@ -24,5 +24,7 @@
         completions."
     </string>
     <string name="noDescription">Nessuna descrizione ufficiale trovata per tale tiolo.</string>
+    <string name="hintBarraDiRicerca">Ricerca...</string>
+    <string name="title_activity_trends">Trends</string>
 
 </resources>

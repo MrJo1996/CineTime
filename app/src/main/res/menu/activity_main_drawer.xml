@@ -12,6 +12,7 @@
             android:id="@+id/profile"
             android:icon="@drawable/ic_person_black_24dp"
             android:title="Profilo" />
+
         <item
             android:id="@+id/serieTvPreferite"
             android:icon="@drawable/ic_favorite_black_24dp"
@@ -20,6 +21,10 @@
             android:id="@+id/ricerca"
             android:icon="@drawable/ic_search_black_24dp"
             android:title="Ricerca" />
+        <item
+            android:id="@+id/trends"
+            android:icon="@drawable/ic_schedule_black_24dp"
+            android:title="In arrivo" />
         <item
             android:id="@+id/notifica"
             android:icon="@drawable/ic_notifications_black_24dp"
