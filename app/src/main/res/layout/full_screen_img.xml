@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FullScreenImg"
-    android:padding="25sp"
-    android:background="@color/matte_black">
+    android:background="@color/matte_black"
+    android:padding="30sp"
+    tools:context=".FullScreenImg">
+
     <ImageView
         android:id="@+id/fullScreenIMG"
         android:layout_width="fill_parent"
