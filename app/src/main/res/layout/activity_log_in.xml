@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="238dp"
         android:contentDescription="LogoImg"
-        app:srcCompat="@drawable/logo"
+        app:srcCompat="@drawable/logo2"
         android:paddingBottom="40dp"
         />
 
@@ -53,8 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <AutoCompleteTextView
-                    android:id="@+id/email"
+                <EditText
+                    android:id="@+id/edittext_username"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:backgroundTint="@android:color/white"
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/edittext_password"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:backgroundTint="@android:color/white"
@@ -91,7 +91,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/email_sign_in_button"
+                android:id="@+id/button_login"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -107,7 +107,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/textview_register"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

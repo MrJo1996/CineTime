@@ -27,4 +27,16 @@
     <string name="hintBarraDiRicerca">Ricerca...</string>
     <string name="title_activity_trends">Trends</string>
 
-</resources>
+
+        //lines to be added are below
+        <string name="login">LOGIN</string>
+        <string name="username">Username</string>
+        <string name="password">Password</string>
+        <string name="not_registered">Not Registered?</string>
+        <string name="register">Register</string>
+        <string name="confirm_password">Confirm Password</string>
+        <string name="already_registered">Already Registered?</string>
+        <string name="welcome_user">Welcome User</string>
+
+    </resources>
+
