@@ -4,12 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -44,6 +41,8 @@ public class SearchActivity extends AppCompatActivity {
     String titoli[];
     String descrizioni[];
     String postersUrl[];
+    String dateRilascio[];
+    Double ratings[];
     String urlReq;
 
     @Override
@@ -63,7 +62,6 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 urlReq = "https://api.themoviedb.org/3/search/tv?api_key=adf4e37d8d2e065dcfac0c49267b47db&language=it-IT&query=" + searchEditText.getText() + "&page=1";
-
                 //req
                 jsonParse();
             }
@@ -73,16 +71,17 @@ public class SearchActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    startActivity(new Intent(SearchActivity.this, ProfiloActivity.class));
-                    Toast.makeText(SearchActivity.this, titoli[0] + " " + descrizioni[0], Toast.LENGTH_SHORT).show();
-                }
-                if (position == 1) {
-                    Toast.makeText(SearchActivity.this, "descrizione 2", Toast.LENGTH_SHORT).show();
-                }
-                if (position == 2) {
-                    Toast.makeText(SearchActivity.this, "descrizione 3", Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(SearchActivity.this, DetailsActivity.class);
+                intent.putExtra("title", titoli[position]);
+                intent.putExtra("overview", descrizioni[position]);
+                intent.putExtra("urlImg", postersUrl[position]);
+
+
+                intent.putExtra("date", dateRilascio[position]);
+                intent.putExtra("rating", ratings[position]);
+
+                startActivity(intent);
+                //Toast.makeText(SearchActivity.this, titoli[position] + " " + descrizioni[position], Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -103,15 +102,18 @@ public class SearchActivity extends AppCompatActivity {
                             titoli = new String[jsonArray.length()];
                             descrizioni = new String[jsonArray.length()];
                             postersUrl = new String[jsonArray.length()];
+                            dateRilascio = new String[jsonArray.length()];
+                            ratings = new Double[jsonArray.length()];
                             //ciclo for per settare i nostri Json Oggetti
                             if (jsonArray.length() != 0) {
                                 for (int i = 0; i < titoli.length; i++) {
                                     titoli[i] = (jsonArray.getJSONObject(i).getString("name"));
                                     descrizioni[i] = (jsonArray.getJSONObject(i).getString("overview"));
                                     postersUrl[i] = (jsonArray.getJSONObject(i).getString("poster_path"));
+                                    dateRilascio[i] = (jsonArray.getJSONObject(i).optString("first_air_date"));
+                                    ratings[i] = (jsonArray.getJSONObject(i).getDouble("vote_average"));
 
-                                /* Log.d("STAMPA", "Titolo " + i + ":" + titoli[i] + "Descrizione " + i + ": " + descrizioni[i]);
-                                textViewResult.append(jsonArray.getJSONObject(i).getString("name") + ", "
+                                /*textViewResult.append(jsonArray.getJSONObject(i).getString("name") + ", "
                                         + jsonArray.getJSONObject(i).getInt("id") + ", "
                                         + jsonArray.getJSONObject(i).getString("first_air_date") + "\n\n");*/
                                 }
@@ -156,6 +158,7 @@ public class SearchActivity extends AppCompatActivity {
             this.rTitle = title;
             this.rDesc = description;
             this.rImgs = imgs;
+
         }
 
         @Override
@@ -174,7 +177,6 @@ public class SearchActivity extends AppCompatActivity {
                 myDesc.setText(getString(R.string.noDescription));
             } else {
                 myDesc.setText(rDesc[position]);
-
             }
 
             urlImg = "https://image.tmdb.org/t/p/w500" + rImgs[position];

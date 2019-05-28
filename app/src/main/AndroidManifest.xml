@@ -14,10 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".DetailsActivity"></activity>
         <activity
             android:name=".Trends"
             android:label="@string/title_activity_trends"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity android:name=".ContactActivity" />
         <activity
             android:name=".LoginActivity"
@@ -55,6 +56,5 @@
             </intent-filter>
         </activity>
     </application>
-
 
 </manifest>

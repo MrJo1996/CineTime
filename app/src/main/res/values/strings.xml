@@ -21,9 +21,9 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-    <string name="noDescription">Nessuna descrizione ufficiale trovata per tale tiolo.</string>
+        completions."</string>
+
+    <string name="noDescription">Nessuna descrizione ufficiale trovata per tale titolo.</string>
     <string name="hintBarraDiRicerca">Ricerca...</string>
     <string name="title_activity_trends">Trends</string>
 
