@@ -1,13 +1,17 @@
 package com.example.myapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.squareup.picasso.Picasso;
 
@@ -26,12 +30,14 @@ public class DetailsActivity extends AppCompatActivity {
         posterUrl = intent.getStringExtra("urlImg");
         String releaseDate = intent.getStringExtra("date");
         Double ratings = intent.getDoubleExtra("rating", 0.0);
+        int numVoti = intent.getIntExtra("vote_count", 0);
 
         final ImageView imgPosterDetail = findViewById(R.id.imgPosterDetail);
         TextView txtTitleDetail = findViewById(R.id.txtTitleDetail);
         TextView txtOverView = findViewById(R.id.txtOverView);
-
-        TextView txtRatings = findViewById(R.id.txtRatings);
+        /*TextView txtNumVoti = findViewById(R.id.votes);
+         */
+        TextView txtRatings = findViewById(R.id.ratings);
         TextView txtReleaseDateDetail = findViewById(R.id.txtReleaseDateDetail);
         TextView titoloTolbar = findViewById(R.id.toolbar_title);
 
@@ -42,9 +48,15 @@ public class DetailsActivity extends AppCompatActivity {
             txtOverView.setText(overview);
         }
 
-        txtRatings.setText(ratings.toString() + "/10 ");
 
-        txtReleaseDateDetail.setText("Data rilascio: " + releaseDate);
+        if (numVoti == 1) {
+            txtRatings.setText("Rating: " + ratings.toString() + "/10 (1 voto)");
+        } else {
+            txtRatings.setText("Rating: " + ratings.toString() + "/10 (" + String.valueOf(numVoti) + " voti)");
+        }
+
+
+        txtReleaseDateDetail.setText("Anno: " + releaseDate);
 
         titoloTolbar.setText(title);
 

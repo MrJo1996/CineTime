@@ -38,12 +38,16 @@ public class SearchActivity extends AppCompatActivity {
     EditText searchEditText;
     ImageButton imgBtnSearch;
 
+    //var titolo Film o Serie
     String titoli[];
     String descrizioni[];
     String postersUrl[];
     String dateRilascio[];
     Double ratings[];
     String urlReq;
+    int numVoti[];
+    /*int ids[];*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,8 @@ public class SearchActivity extends AppCompatActivity {
                 intent.putExtra("urlImg", postersUrl[position]);
                 intent.putExtra("date", dateRilascio[position]);
                 intent.putExtra("rating", ratings[position]);
+                intent.putExtra("vote_count", numVoti[position]);
+               /* intent.putExtra("id", ids[position]);*/
 
                 startActivity(intent);
             }
@@ -102,6 +108,8 @@ public class SearchActivity extends AppCompatActivity {
                             postersUrl = new String[jsonArray.length()];
                             dateRilascio = new String[jsonArray.length()];
                             ratings = new Double[jsonArray.length()];
+                            numVoti = new int[jsonArray.length()];
+                            /*ids = new int[jsonArray.length()];*/
                             //ciclo for per settare i nostri oggetti
                             if (jsonArray.length() != 0) {
                                 for (int i = 0; i < titoli.length; i++) {
@@ -118,8 +126,8 @@ public class SearchActivity extends AppCompatActivity {
                                         dateRilascio[i] = (jsonArray.getJSONObject(i).optString("release_date"));
                                     }
                                     ratings[i] = (jsonArray.getJSONObject(i).getDouble("vote_average"));
-
-
+                                    numVoti[i] = (jsonArray.getJSONObject(i).getInt("vote_count"));
+                                    /*ids[i] = (jsonArray.getJSONObject(i).getInt("id"));*/
                                 }
                             } else {
                                 //Controllo se c'è o meno un risultato per la ricerca

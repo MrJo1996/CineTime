@@ -121,85 +121,85 @@ public class MainActivity extends AppCompatActivity
 */
     }
 
-        @Override
-        public void onBackPressed(){
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            if (drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.closeDrawer(GravityCompat.START);
-            } else {
-                super.onBackPressed();
-            }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
+    }
 
 
-        @Override
-        public boolean onCreateOptionsMenu (Menu menu){
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.main, menu);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
             return true;
         }
 
-        @Override
-        public boolean onOptionsItemSelected (MenuItem item){
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
-            int id = item.getItemId();
-
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.action_settings) {
-                return true;
-            }
-
-            return super.onOptionsItemSelected(item);
-        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
-        @SuppressWarnings("StatementWithEmptyBody")
-        @Override
-        public boolean onNavigationItemSelected (MenuItem item){
-            // Handle navigation view item clicks here.
-            int id = item.getItemId();
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-            if (id == R.id.home) {
-                startActivity(new Intent(MainActivity.this, MainActivity.class));
+        if (id == R.id.home) {
+            startActivity(new Intent(MainActivity.this, MainActivity.class));
 
-                // Handle the camera action
-            } else if (id == R.id.profile) {
+            // Handle the camera action
+        } else if (id == R.id.profile) {
 
-                //passo l'username al profilo per farlo visualizzare
+            //passo l'username al profilo per farlo visualizzare
 
-                Intent intent = new Intent(MainActivity.this, ProfiloActivity.class);
-                intent.putExtra("username", usernameProva);
-                Log.d("XXXXXXlogin", "CIAO-> " + usernameProva);
-                startActivity(intent);
-                //startActivity(new Intent(MainActivity.this, ProfiloActivity.class));
-
-
-            } else if (id == R.id.serieTvPreferite) {
-                startActivity(new Intent(MainActivity.this, FavouriteSerieActivity.class));
+            Intent intent = new Intent(MainActivity.this, ProfiloActivity.class);
+            intent.putExtra("username", usernameProva);
+            Log.d("XXXXXXlogin", "CIAO-> " + usernameProva);
+            startActivity(intent);
+            //startActivity(new Intent(MainActivity.this, ProfiloActivity.class));
 
 
-            } else if (id == R.id.impostazioni) {
-                startActivity(new Intent(MainActivity.this, SettingActivity.class));
-
-            } else if (id == R.id.ricerca) {
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-
-            } else if (id == R.id.notifica) {
-                startActivity(new Intent(MainActivity.this, NotificationsActivity.class));
+        } else if (id == R.id.serieTvPreferite) {
+            startActivity(new Intent(MainActivity.this, FavouriteSerieActivity.class));
 
 
-            } else if (id == R.id.nav_share) {
-                //TODO urlDownload da cambiare con quello che sarà il vero url
-                String urlDownload = "https://play.google.com/store/apps/details?id=com.supercell.brawlstars";
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                String object = "Serie Time";
-                String body = "Sto utilizzando l'app SerieTime, scaricala anche tu da " + urlDownload + " e lascia una recensione.";
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, object);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, body);
-                startActivity(Intent.createChooser(shareIntent, "Condividi"));
+        } else if (id == R.id.impostazioni) {
+            startActivity(new Intent(MainActivity.this, SettingActivity.class));
+
+        } else if (id == R.id.ricerca) {
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+
+        } else if (id == R.id.notifica) {
+            startActivity(new Intent(MainActivity.this, NotificationsActivity.class));
+
+
+        } else if (id == R.id.nav_share) {
+            //TODO urlDownload da cambiare con quello che sarà il vero url
+            String urlDownload = "https://play.google.com/store/apps/details?id=com.supercell.brawlstars";
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            String object = "Serie Time";
+            String body = "Sto utilizzando l'app SerieTime, scaricala anche tu da " + urlDownload + " e lascia una recensione.";
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, object);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, body);
+            startActivity(Intent.createChooser(shareIntent, "Condividi"));
         } else if (id == R.id.nav_share) {
             //TODO urlDownload da cambiare con quello che sarà il vero url
             String urlDownload = "https://play.google.com/store/apps/details?id=com.supercell.brawlstars";
@@ -211,22 +211,21 @@ public class MainActivity extends AppCompatActivity
             shareIntent.putExtra(Intent.EXTRA_TEXT, body);
             startActivity(Intent.createChooser(shareIntent, "Condividi"));
 
-            } else if (id == R.id.nav_send) {
-                startActivity(new Intent(MainActivity.this, ContactActivity.class));
-            }
-        else if (id == R.id.trends) {
+        } else if (id == R.id.nav_send) {
+            startActivity(new Intent(MainActivity.this, ContactActivity.class));
+        } else if (id == R.id.trends) {
             startActivity(new Intent(MainActivity.this, Trends.class));
         }
 
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-            return true;
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
 
     }
 
     //CODE
 
-    private void jsonParse () {
+    private void jsonParse() {
         /*
          * JsonObjectRequest takes in five paramaters
          * Request Type - This specifies the type of the request eg: GET,POST
