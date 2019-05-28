@@ -7,4 +7,5 @@
     <color name="endblue">#0bcce6</color>
     <color name="colorAccent">#FF4081</color>
     <color name="hintColor">#F5F2F2</color>
+    <color name="matte_black">#212121</color>
 </resources>

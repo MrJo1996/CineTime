@@ -61,7 +61,8 @@ public class SearchActivity extends AppCompatActivity {
         imgBtnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                urlReq = "https://api.themoviedb.org/3/search/tv?api_key=adf4e37d8d2e065dcfac0c49267b47db&language=it-IT&query=" + searchEditText.getText() + "&page=1";
+                urlReq = "https://api.themoviedb.org/3/search/multi?api_key=adf4e37d8d2e065dcfac0c49267b47db&language=it-IT&query="
+                        + searchEditText.getText() + "&page=1&include_adult=false";
                 //req
                 jsonParse();
             }
@@ -75,13 +76,10 @@ public class SearchActivity extends AppCompatActivity {
                 intent.putExtra("title", titoli[position]);
                 intent.putExtra("overview", descrizioni[position]);
                 intent.putExtra("urlImg", postersUrl[position]);
-
-
                 intent.putExtra("date", dateRilascio[position]);
                 intent.putExtra("rating", ratings[position]);
 
                 startActivity(intent);
-                //Toast.makeText(SearchActivity.this, titoli[position] + " " + descrizioni[position], Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -104,22 +102,28 @@ public class SearchActivity extends AppCompatActivity {
                             postersUrl = new String[jsonArray.length()];
                             dateRilascio = new String[jsonArray.length()];
                             ratings = new Double[jsonArray.length()];
-                            //ciclo for per settare i nostri Json Oggetti
+                            //ciclo for per settare i nostri oggetti
                             if (jsonArray.length() != 0) {
                                 for (int i = 0; i < titoli.length; i++) {
-                                    titoli[i] = (jsonArray.getJSONObject(i).getString("name"));
+                                    if (jsonArray.getJSONObject(i).has("name")) {
+                                        titoli[i] = jsonArray.getJSONObject(i).getString("name");
+                                    } else {
+                                        titoli[i] = jsonArray.getJSONObject(i).getString("title");
+                                    }
                                     descrizioni[i] = (jsonArray.getJSONObject(i).getString("overview"));
                                     postersUrl[i] = (jsonArray.getJSONObject(i).getString("poster_path"));
-                                    dateRilascio[i] = (jsonArray.getJSONObject(i).optString("first_air_date"));
+                                    if (jsonArray.getJSONObject(i).has("first_air_date")) {
+                                        dateRilascio[i] = (jsonArray.getJSONObject(i).optString("first_air_date"));
+                                    } else {
+                                        dateRilascio[i] = (jsonArray.getJSONObject(i).optString("release_date"));
+                                    }
                                     ratings[i] = (jsonArray.getJSONObject(i).getDouble("vote_average"));
 
-                                /*textViewResult.append(jsonArray.getJSONObject(i).getString("name") + ", "
-                                        + jsonArray.getJSONObject(i).getInt("id") + ", "
-                                        + jsonArray.getJSONObject(i).getString("first_air_date") + "\n\n");*/
+
                                 }
                             } else {
                                 //Controllo se c'è o meno un risultato per la ricerca
-                                Toast.makeText(SearchActivity.this, "Nessun risultato trovato per tale titolo.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SearchActivity.this, "Nessun risultato trovato per tale titolo.", Toast.LENGTH_LONG).show();
                             }
                             //creazione adapter per la view passandogli param durante la req, prima dava NPE(non avvalorava gli array)
                             MySearchAdapter mySearchAdapter = new MySearchAdapter(context, titoli, descrizioni, postersUrl);

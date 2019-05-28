@@ -5,12 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 public class DetailsActivity extends AppCompatActivity {
+    String posterUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,18 +23,17 @@ public class DetailsActivity extends AppCompatActivity {
 
         String title = intent.getStringExtra("title");
         String overview = intent.getStringExtra("overview");
-        String posterUrl = intent.getStringExtra("urlImg");
+        posterUrl = intent.getStringExtra("urlImg");
         String releaseDate = intent.getStringExtra("date");
         Double ratings = intent.getDoubleExtra("rating", 0.0);
 
-        ImageView imgPosterDetail = findViewById(R.id.imgPosterDetail);
+        final ImageView imgPosterDetail = findViewById(R.id.imgPosterDetail);
         TextView txtTitleDetail = findViewById(R.id.txtTitleDetail);
         TextView txtOverView = findViewById(R.id.txtOverView);
 
         TextView txtRatings = findViewById(R.id.txtRatings);
         TextView txtReleaseDateDetail = findViewById(R.id.txtReleaseDateDetail);
         TextView titoloTolbar = findViewById(R.id.toolbar_title);
-        Toolbar toolBarDetail = findViewById(R.id.toolbarDetail);
 
         txtTitleDetail.setText(title);
         if (overview.isEmpty()) {
@@ -40,14 +41,23 @@ public class DetailsActivity extends AppCompatActivity {
         } else {
             txtOverView.setText(overview);
         }
-        Picasso.get().load("https://image.tmdb.org/t/p/w500/" + posterUrl).fit().centerInside().into(imgPosterDetail);
 
         txtRatings.setText(ratings.toString() + "/10 ");
 
-        txtReleaseDateDetail.setText(releaseDate);
+        txtReleaseDateDetail.setText("Data rilascio: " + releaseDate);
 
         titoloTolbar.setText(title);
 
-        /*toolBarDetail.setTitle(title);*/
+        Picasso.get().load("https://image.tmdb.org/t/p/w500" + posterUrl).fit().centerInside().into(imgPosterDetail);
+        //full screen view for poster
+        imgPosterDetail.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent fullScreenIMG = new Intent(DetailsActivity.this, FullScreenImg.class);
+                fullScreenIMG.putExtra("imgUrl", "https://image.tmdb.org/t/p/w500" + posterUrl);
+
+                startActivity(fullScreenIMG);
+            }
+        });
+
     }
 }
