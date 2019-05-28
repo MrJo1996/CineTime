@@ -31,6 +31,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         TextView txtRatings = findViewById(R.id.txtRatings);
         TextView txtReleaseDateDetail = findViewById(R.id.txtReleaseDateDetail);
+        TextView titoloTolbar = findViewById(R.id.toolbar_title);
         Toolbar toolBarDetail = findViewById(R.id.toolbarDetail);
 
         txtTitleDetail.setText(title);
@@ -45,6 +46,8 @@ public class DetailsActivity extends AppCompatActivity {
 
         txtReleaseDateDetail.setText(releaseDate);
 
-        toolBarDetail.setTitle(title);
+        titoloTolbar.setText(title);
+
+        /*toolBarDetail.setTitle(title);*/
     }
 }
