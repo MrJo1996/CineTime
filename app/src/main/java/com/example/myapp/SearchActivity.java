@@ -46,7 +46,7 @@ public class SearchActivity extends AppCompatActivity {
     Double ratings[];
     String urlReq;
     int numVoti[];
-    int ids[];
+    //int ids[];
 
 
     @Override
@@ -83,7 +83,7 @@ public class SearchActivity extends AppCompatActivity {
                 intent.putExtra("date", dateRilascio[position]);
                 intent.putExtra("rating", ratings[position]);
                 intent.putExtra("vote_count", numVoti[position]);
-                intent.putExtra("id", ids[position]);
+                //intent.putExtra("id", ids[position]);
 
                 startActivity(intent);
             }
@@ -127,7 +127,7 @@ public class SearchActivity extends AppCompatActivity {
                                     }
                                     ratings[i] = (jsonArray.getJSONObject(i).getDouble("vote_average"));
                                     numVoti[i] = (jsonArray.getJSONObject(i).getInt("vote_count"));
-                                    ids[i] = (jsonArray.getJSONObject(i).getInt("id"));
+                                    //ids[i] = (jsonArray.getJSONObject(i).getInt("id"));
                                 }
                             } else {
                                 //Controllo se c'è o meno un risultato per la ricerca
