@@ -32,10 +32,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
-        View v = this.getLayoutInflater().inflate(R.layout.progressbar, null);
-        dialog.setContentView(v);
-        dialog.show();
 
         db = new DatabaseHelper(this);
         mTextUsername = (EditText) findViewById(R.id.edittext_username);
@@ -57,16 +53,19 @@ public class LoginActivity extends AppCompatActivity {
                 String pwd = mTextPassword.getText().toString().trim();
                 Boolean res = db.checkUser(user, pwd);
                 if (res == true) {
-//passo username
+
+                    Dialog dialog = new Dialog(LoginActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
+                    View v = LoginActivity.this.getLayoutInflater().inflate(R.layout.progressbar, null);
+                    dialog.setContentView(v);
+                    dialog.show();
 
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("username", user);
-                    Log.d("XXXXXXlogin", "CIAO-> " + user);
                     startActivity(intent);
 
 
                 } else {
-                    Toast.makeText(LoginActivity.this, "Login Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Credenziali errate.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -18,6 +18,10 @@ public class RegisterActivity extends AppCompatActivity {
     EditText mTextUsername;
     EditText mTextPassword;
     EditText mTextCnfPassword;
+    EditText mTextNome;
+    EditText mTextCognome;
+    EditText mTextEmail;
+
     Button mButtonRegister;
     TextView mTextViewLogin;
 
@@ -31,6 +35,12 @@ public class RegisterActivity extends AppCompatActivity {
         mTextUsername = (EditText)findViewById(R.id.edittext_username);
         mTextPassword = (EditText)findViewById(R.id.edittext_password);
         mTextCnfPassword = (EditText)findViewById(R.id.edittext_cnf_password);
+
+        mTextNome = (EditText)findViewById(R.id.edittext_nome);
+        mTextCognome = (EditText)findViewById(R.id.edittext_cognome);
+        mTextEmail = (EditText)findViewById(R.id.edittext_email);
+
+
         mButtonRegister = (Button)findViewById(R.id.button_register);
         mTextViewLogin = (TextView)findViewById(R.id.textview_login);
         mTextViewLogin.setOnClickListener(new View.OnClickListener() {
@@ -48,20 +58,26 @@ public class RegisterActivity extends AppCompatActivity {
                 String pwd = mTextPassword.getText().toString().trim();
                 String cnf_pwd = mTextCnfPassword.getText().toString().trim();
 
+                String name = mTextNome.getText().toString().trim();
+                String surname = mTextCognome.getText().toString().trim();
+                String mail = mTextEmail.getText().toString().trim();
+
+
+
                 if(pwd.equals(cnf_pwd)){
-                    long val = db.addUser(user,pwd);
+                    long val = db.addUser(user,pwd,name,surname,mail);
                     if(val > 0){
-                        Toast.makeText(RegisterActivity.this,"You have registered",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this,"Registrazione effettuata.",Toast.LENGTH_SHORT).show();
                         Intent moveToLogin = new Intent(RegisterActivity.this, LoginActivity.class);
                         startActivity(moveToLogin);
                     }
                     else{
-                        Toast.makeText(RegisterActivity.this,"Registeration Error",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this,"Impossibile procedere alla registrazione.",Toast.LENGTH_SHORT).show();
                     }
 
                 }
                 else{
-                    Toast.makeText(RegisterActivity.this,"Password is not matching",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"Password non corrispondenti",Toast.LENGTH_SHORT).show();
                 }
             }
         });

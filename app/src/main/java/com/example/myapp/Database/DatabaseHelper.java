@@ -12,6 +12,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String COL_1 ="ID";
     public static final String COL_2 ="username";
     public static final String COL_3 ="password";
+    public static final String COL_4 ="nome";
+    public static final String COL_5 ="cognome";
+    public static final String COL_6 ="email";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -19,7 +22,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, username TEXT, password TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, username TEXT, password TEXT, nome TEXT, cognome TEXT, email TEXT)");
+        //sqLiteDatabase.execSQL("INSERT INTO registeruser (username, password,nome,cognome,email) VALUES (jois, ciao, jona, dri,hola)");
+
     }
 
     @Override
@@ -28,11 +33,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         onCreate(sqLiteDatabase);
     }
 
-    public long addUser(String user, String password){
+    public long addUser(String user, String password, String nome, String cognome, String email){
         SQLiteDatabase db = this.getWritableDatabase();
+
+        //String query = ("INSERT INTO registeruser VALUES ("+
         ContentValues contentValues = new ContentValues();
         contentValues.put("username",user);
         contentValues.put("password",password);
+        contentValues.put("nome",nome);
+        contentValues.put("cognome",cognome);
+        contentValues.put("email",email);
         long res = db.insert("registeruser",null,contentValues);
         db.close();
         return  res;
