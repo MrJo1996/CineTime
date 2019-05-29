@@ -37,7 +37,6 @@ public class ProfiloActivity extends AppCompatActivity {
         nomeTextView = findViewById(R.id.nomeUtente);
         nomeTextView.setText(username);
 
-
     }
 
 }

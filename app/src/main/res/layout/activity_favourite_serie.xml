@@ -18,10 +18,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="35dp"
+        android:layout_marginTop="3dp"
+        android:paddingTop="9dp"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:paddingLeft="121dp"
-        android:layout_marginTop="10dp"
+        android:textStyle="bold"
         android:text="Serie TV preferite"/>
 
     <ListView
