@@ -55,7 +55,6 @@ public class DetailsActivity extends AppCompatActivity {
             txtRatings.setText("Rating: " + ratings.toString() + "/10 (" + String.valueOf(numVoti) + " voti)");
         }
 
-
         txtReleaseDateDetail.setText("Anno: " + releaseDate);
 
         titoloTolbar.setText(title);
