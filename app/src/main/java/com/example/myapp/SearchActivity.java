@@ -46,7 +46,7 @@ public class SearchActivity extends AppCompatActivity {
     Double ratings[];
     String urlReq;
     int numVoti[];
-    //int ids[];
+    int ids[];
 
 
     @Override
@@ -83,7 +83,8 @@ public class SearchActivity extends AppCompatActivity {
                 intent.putExtra("date", dateRilascio[position]);
                 intent.putExtra("rating", ratings[position]);
                 intent.putExtra("vote_count", numVoti[position]);
-                //intent.putExtra("id", ids[position]);
+                intent.putExtra("ids", ids[position]);
+                Toast.makeText(SearchActivity.this, "ID: " + ids[position], Toast.LENGTH_LONG).show();
 
                 startActivity(intent);
             }
@@ -109,7 +110,8 @@ public class SearchActivity extends AppCompatActivity {
                             dateRilascio = new String[jsonArray.length()];
                             ratings = new Double[jsonArray.length()];
                             numVoti = new int[jsonArray.length()];
-                            /*ids = new int[jsonArray.length()];*/
+                            ids = new int[jsonArray.length()];
+
                             //ciclo for per settare i nostri oggetti
                             if (jsonArray.length() != 0) {
                                 for (int i = 0; i < titoli.length; i++) {
@@ -127,7 +129,7 @@ public class SearchActivity extends AppCompatActivity {
                                     }
                                     ratings[i] = (jsonArray.getJSONObject(i).getDouble("vote_average"));
                                     numVoti[i] = (jsonArray.getJSONObject(i).getInt("vote_count"));
-                                    //ids[i] = (jsonArray.getJSONObject(i).getInt("id"));
+                                    ids[i] = (jsonArray.getJSONObject(i).getInt("id"));
                                 }
                             } else {
                                 //Controllo se c'è o meno un risultato per la ricerca
@@ -188,7 +190,7 @@ public class SearchActivity extends AppCompatActivity {
             if (rDesc[position].isEmpty()) {
                 myDesc.setText(getString(R.string.noDescription));
             } else {
-                myDesc.setText(rDesc[position]);
+                myDesc.setText(rDesc[position].substring(0,100) + "...");
             }
 
             urlImg = "https://image.tmdb.org/t/p/w500" + rImgs[position];

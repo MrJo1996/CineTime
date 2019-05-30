@@ -1,24 +1,27 @@
 package com.example.myapp;
 
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.MediaController;
-import android.widget.ProgressBar;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class DetailsActivity extends AppCompatActivity {
     String posterUrl;
     ImageButton aggiungiAiPreferitiBtn;
+    ListView listFavoriteView;
+    //set a true se premuto aggiungi a preferiti
     boolean preferiti = false;
 
 
@@ -29,44 +32,42 @@ public class DetailsActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
 
-        String title = intent.getStringExtra("title");
+        final String title = intent.getStringExtra("title");
         String overview = intent.getStringExtra("overview");
         posterUrl = intent.getStringExtra("urlImg");
         String releaseDate = intent.getStringExtra("date");
         Double ratings = intent.getDoubleExtra("rating", 0.0);
         int numVoti = intent.getIntExtra("vote_count", 0);
-        //int id = intent.getIntExtra("id", 0);
-
-
+        final int id = intent.getIntExtra("ids", 0);
 
         //bottone per aggiungere ai preferiti
         aggiungiAiPreferitiBtn = (ImageButton) findViewById(R.id.aggiungiAiPreferiti);
-        aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp) ;
-
+        aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
         aggiungiAiPreferitiBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (!preferiti) {
-
-                    //per cambiare il cuore vuoto in cuore pieno + TODO aggiungere ai preferiti
-
-                    aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
-                    preferiti =true;
-
-                } else {
-
-                    //per cambiare il cuore pieno in cuore vuoto + TODO eliminare dai preferiti
-                    aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
-                    preferiti = false;
-                }
+                                                      @Override
+                                                      public void onClick(View view) {
+                                                          if (!preferiti) {
+                                                              //per cambiare il cuore vuoto in cuore pieno + TODO aggiungere ai preferiti
+                                                              aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
+                                                              preferiti = true;
 
 
 
-
-            }
-
-            }
+                                                               /*ArrayList<ElementoFilmSerie> titoloPref = new ArrayList<ElementoFilmSerie>();
+                                                               ElementoFilmSerie elemento = new ElementoFilmSerie(id,title,posterUrl);
+                                                               titoloPref.add(elemento);*/
+                                                            /*  Intent passData = new Intent(DetailsActivity.this, FavouriteSerieActivity.class);
+                                                              passData.putExtra("id", id);
+                                                              passData.putExtra("title", title);
+                                                              passData.putExtra("poster", posterUrl);
+                                                              startActivity(passData);*/
+                                                          } else {
+                                                              //per cambiare il cuore pieno in cuore vuoto + TODO eliminare dai preferiti
+                                                              aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
+                                                              preferiti = false;
+                                                          }
+                                                      }
+                                                  }
         );
 
         final ImageView imgPosterDetail = findViewById(R.id.imgPosterDetail);
@@ -108,4 +109,6 @@ public class DetailsActivity extends AppCompatActivity {
         });
 
     }
+
+
 }

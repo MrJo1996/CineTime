@@ -4,19 +4,14 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapp.Database.DatabaseHelper;
-import com.example.myapp.R;
-import com.example.myapp.RegisterActivity;
 
 public class LoginActivity extends AppCompatActivity {
     EditText mTextUsername;
@@ -31,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-
 
         db = new DatabaseHelper(this);
         mTextUsername = (EditText) findViewById(R.id.edittext_username);
@@ -53,7 +47,13 @@ public class LoginActivity extends AppCompatActivity {
                 String pwd = mTextPassword.getText().toString().trim();
                 Boolean res = db.checkUser(user, pwd);
                 if (res == true) {
-
+                    //setta a true l'utente loggato
+                    int check;
+                    db.setStatusUser(1, user);
+                    check = db.setStatusUser(1, user);
+                    if (check != 0) {
+                        Toast.makeText(LoginActivity.this, "SETTATO A LOGGATO", Toast.LENGTH_SHORT).show();
+                    }
                     Dialog dialog = new Dialog(LoginActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
                     View v = LoginActivity.this.getLayoutInflater().inflate(R.layout.progressbar, null);
                     dialog.setContentView(v);
@@ -62,19 +62,19 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("username", user);
                     startActivity(intent);
-
-
                 } else {
                     Toast.makeText(LoginActivity.this, "Credenziali errate.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
 
-
+    @Override
+    public void onBackPressed() {
+        //impossibilita il tornare indietro (ad esempio dopo il logOut che lo riporta alla logIn)
     }
 
     public void showProgressingView() {
-
         if (!isProgressShowing) {
             View view = findViewById(R.id.progressBar1);
             view.bringToFront();
@@ -87,6 +87,5 @@ public class LoginActivity extends AppCompatActivity {
         viewGroup.removeView(progressView);
         isProgressShowing = false;
     }
-
 
 }

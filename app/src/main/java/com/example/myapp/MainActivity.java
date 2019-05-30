@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.myapp.ContactActivity;
+import com.example.myapp.Database.DatabaseHelper;
 import com.example.myapp.FavouriteSerieActivity;
 import com.example.myapp.NotificationsActivity;
 import com.example.myapp.ProfiloActivity;
@@ -49,7 +51,8 @@ public class MainActivity extends AppCompatActivity
     private Button btnNext;
     private RequestQueue mQueue;
     String usernameProva;
-    TextView nameProva;
+    String userName;
+    DatabaseHelper db; //per impostare status a logout
 
 
     @Override
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        db = new DatabaseHelper(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -107,28 +111,11 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, ProfiloActivity.class));
             }
         });
-
-
-        //prendo username dalla login
-
-        Intent loginIntent = getIntent();
-        usernameProva = loginIntent.getStringExtra("username");
-        //Log.d("hola", "CIAO-> " + this.usernameProva + " INTENT: " +loginIntent.getStringExtra("username") );
-
-        // ho provato a far comparire il nome nel menu ma non va
-        /*nameProva = findViewById(R.id.textView);
-        nameProva.setText(usernameProva);
-*/
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        //se l'utente premerà il back button non gli sarà concesso di tornare indietro
     }
 
 
@@ -150,77 +137,80 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.home:
+                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                break;
 
-        if (id == R.id.home) {
-            startActivity(new Intent(MainActivity.this, MainActivity.class));
+            case R.id.profile:
+                //passo l'username al profilo per farlo visualizzare
+                Intent intent = new Intent(MainActivity.this, ProfiloActivity.class);
+                intent.putExtra("username", usernameProva);
+                startActivity(intent);
+                break;
 
-            // Handle the camera action
-        } else if (id == R.id.profile) {
+            case R.id.serieTvPreferite:
+                startActivity(new Intent(MainActivity.this, FavouriteSerieActivity.class));
+                break;
 
-            //passo l'username al profilo per farlo visualizzare
+            case R.id.impostazioni:
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                break;
 
-            Intent intent = new Intent(MainActivity.this, ProfiloActivity.class);
-            intent.putExtra("username", usernameProva);
-            Log.d("XXXXXXlogin", "CIAO-> " + usernameProva);
-            startActivity(intent);
-            //startActivity(new Intent(MainActivity.this, ProfiloActivity.class));
+            case R.id.ricerca:
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                break;
 
+            case R.id.notifica:
+                startActivity(new Intent(MainActivity.this, NotificationsActivity.class));
+                break;
 
-        } else if (id == R.id.serieTvPreferite) {
-            startActivity(new Intent(MainActivity.this, FavouriteSerieActivity.class));
+            case R.id.nav_share:
+                //TODO urlDownload da cambiare con quello che sarà il vero url
+                String urlDownload = "https://play.google.com/store/apps/details?id=com.supercell.brawlstars";
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                String object = "Serie Time";
+                String body = "Sto utilizzando l'app SerieTime, scaricala anche tu da " + urlDownload + " e lascia una recensione.";
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, object);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, body);
+                startActivity(Intent.createChooser(shareIntent, "Condividi"));
+                break;
 
+            case R.id.nav_send:
+                startActivity(new Intent(MainActivity.this, ContactActivity.class));
+                break;
 
-        } else if (id == R.id.impostazioni) {
-            startActivity(new Intent(MainActivity.this, SettingActivity.class));
+            case R.id.trends:
+                startActivity(new Intent(MainActivity.this, Trends.class));
+                break;
 
-        } else if (id == R.id.ricerca) {
-            startActivity(new Intent(MainActivity.this, SearchActivity.class));
-
-        } else if (id == R.id.notifica) {
-            startActivity(new Intent(MainActivity.this, NotificationsActivity.class));
-
-
-        } else if (id == R.id.nav_share) {
-            //TODO urlDownload da cambiare con quello che sarà il vero url
-            String urlDownload = "https://play.google.com/store/apps/details?id=com.supercell.brawlstars";
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
-            String object = "Serie Time";
-            String body = "Sto utilizzando l'app SerieTime, scaricala anche tu da " + urlDownload + " e lascia una recensione.";
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, object);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, body);
-            startActivity(Intent.createChooser(shareIntent, "Condividi"));
-        } else if (id == R.id.nav_share) {
-            //TODO urlDownload da cambiare con quello che sarà il vero url
-            String urlDownload = "https://play.google.com/store/apps/details?id=com.supercell.brawlstars";
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
-            String object = "Serie Time";
-            String body = "Sto utilizzando l'app SerieTime, scaricala anche tu da " + urlDownload + " e lascia una recensione.";
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, object);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, body);
-            startActivity(Intent.createChooser(shareIntent, "Condividi"));
-
-        } else if (id == R.id.nav_send) {
-            startActivity(new Intent(MainActivity.this, ContactActivity.class));
-        } else if (id == R.id.trends) {
-            startActivity(new Intent(MainActivity.this, Trends.class));
+            case R.id.logout:
+                //prendo username dalla login
+                Intent prendoUserName = getIntent();
+                userName = prendoUserName.getStringExtra("username");
+                //setta a true l'utente loggato
+                int check;
+                db.setStatusUser(0, userName);
+                check = db.setStatusUser(0, userName);
+                Log.d("LOGGGGGGGGGG", "Out: " + userName);
+                if (check != 0) {
+                    Toast.makeText(MainActivity.this, "SETTATO A LOGOUT", Toast.LENGTH_SHORT).show();
+                }
+                Intent out = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(out);
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-
     }
 
     //CODE

@@ -32,21 +32,20 @@ public class RegisterActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
-        mTextUsername = (EditText)findViewById(R.id.edittext_username);
-        mTextPassword = (EditText)findViewById(R.id.edittext_password);
-        mTextCnfPassword = (EditText)findViewById(R.id.edittext_cnf_password);
+        mTextUsername = (EditText) findViewById(R.id.edittext_username);
+        mTextPassword = (EditText) findViewById(R.id.edittext_password);
+        mTextCnfPassword = (EditText) findViewById(R.id.edittext_cnf_password);
 
-        mTextNome = (EditText)findViewById(R.id.edittext_nome);
-        mTextCognome = (EditText)findViewById(R.id.edittext_cognome);
-        mTextEmail = (EditText)findViewById(R.id.edittext_email);
+        mTextNome = (EditText) findViewById(R.id.edittext_nome);
+        mTextCognome = (EditText) findViewById(R.id.edittext_cognome);
+        mTextEmail = (EditText) findViewById(R.id.edittext_email);
 
-
-        mButtonRegister = (Button)findViewById(R.id.button_register);
-        mTextViewLogin = (TextView)findViewById(R.id.textview_login);
+        mButtonRegister = (Button) findViewById(R.id.button_register);
+        mTextViewLogin = (TextView) findViewById(R.id.textview_login);
         mTextViewLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent LoginIntent = new Intent(RegisterActivity.this,LoginActivity.class);
+                Intent LoginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(LoginIntent);
             }
         });
@@ -62,25 +61,20 @@ public class RegisterActivity extends AppCompatActivity {
                 String surname = mTextCognome.getText().toString().trim();
                 String mail = mTextEmail.getText().toString().trim();
 
-
-
-                if(pwd.equals(cnf_pwd)){
-                    long val = db.addUser(user,pwd,name,surname,mail,0);
-                    if(val > 0){
-                        Toast.makeText(RegisterActivity.this,"Registrazione effettuata.",Toast.LENGTH_SHORT).show();
+                if (pwd.equals(cnf_pwd)) {
+                    long val = db.addUser(user, pwd, name, surname, mail, 0);
+                    if (val > 0) {
+                        Toast.makeText(RegisterActivity.this, "Registrazione effettuata.", Toast.LENGTH_SHORT).show();
                         Intent moveToLogin = new Intent(RegisterActivity.this, LoginActivity.class);
                         startActivity(moveToLogin);
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Impossibile procedere alla registrazione.", Toast.LENGTH_SHORT).show();
                     }
-                    else{
-                        Toast.makeText(RegisterActivity.this,"Impossibile procedere alla registrazione.",Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-                else{
-                    Toast.makeText(RegisterActivity.this,"Password non corrispondenti",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Password non corrispondenti", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
+
 }
