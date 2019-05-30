@@ -65,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                 if(pwd.equals(cnf_pwd)){
-                    long val = db.addUser(user,pwd,name,surname,mail);
+                    long val = db.addUser(user,pwd,name,surname,mail,0);
                     if(val > 0){
                         Toast.makeText(RegisterActivity.this,"Registrazione effettuata.",Toast.LENGTH_SHORT).show();
                         Intent moveToLogin = new Intent(RegisterActivity.this, LoginActivity.class);

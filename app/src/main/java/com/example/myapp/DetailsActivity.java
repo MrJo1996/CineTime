@@ -35,7 +35,7 @@ public class DetailsActivity extends AppCompatActivity {
         String releaseDate = intent.getStringExtra("date");
         Double ratings = intent.getDoubleExtra("rating", 0.0);
         int numVoti = intent.getIntExtra("vote_count", 0);
-        int id = intent.getIntExtra("id", 0);
+        //int id = intent.getIntExtra("id", 0);
 
 
 

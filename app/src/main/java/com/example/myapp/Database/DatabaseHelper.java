@@ -15,6 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String COL_4 ="nome";
     public static final String COL_5 ="cognome";
     public static final String COL_6 ="email";
+    public static final String COL_7 ="logged";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -22,7 +23,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, username TEXT, password TEXT, nome TEXT, cognome TEXT, email TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, username TEXT, password TEXT, nome TEXT, cognome TEXT, email TEXT, logged INTEGER)");
+        sqLiteDatabase.execSQL("CREATE TABLE favourite (idfavourite INTEGER, idUtente INTEGER, username TEXT)");
+
         //sqLiteDatabase.execSQL("INSERT INTO registeruser (username, password,nome,cognome,email) VALUES (jois, ciao, jona, dri,hola)");
 
     }
@@ -33,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         onCreate(sqLiteDatabase);
     }
 
-    public long addUser(String user, String password, String nome, String cognome, String email){
+    public long addUser(String user, String password, String nome, String cognome, String email, int logged){
         SQLiteDatabase db = this.getWritableDatabase();
 
         //String query = ("INSERT INTO registeruser VALUES ("+
@@ -43,6 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         contentValues.put("nome",nome);
         contentValues.put("cognome",cognome);
         contentValues.put("email",email);
+        contentValues.put("logged",logged);
         long res = db.insert("registeruser",null,contentValues);
         db.close();
         return  res;
@@ -64,7 +68,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             return  false;
     }
 
-  /*  public Cursor getUsername (){
+/*    public Cursor ottieniUtente(long username)
+    {
+        Cursor mCursore = query(true, DATABASE_TABELLA, new String[] {KEY_RIGAID, KEY_NOME, KEY_INDIRIZZO}, KEY_RIGAID + "=" + rigaId, null, null, null, null, null);
+        if (mCursore != null) {
+            mCursore.moveToFirst();
+        }
+        return mCursore;
+    }
+
+  / public Cursor getUsername (){
         SQLiteDatabase db = this.getWritableDatabase();
         String query=
     }*/
