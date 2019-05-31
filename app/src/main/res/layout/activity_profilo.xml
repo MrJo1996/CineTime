@@ -35,7 +35,7 @@
                 android:layout_height="150dp"
                 android:src="@drawable/profilo"/>-->
             <TextView
-                android:id="@+id/nomeUtente"
+                android:id="@+id/userNameUtente"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
@@ -132,7 +132,48 @@
         android:orientation="vertical"
         android:layout_gravity="center"
         android:layout_marginTop="45dp">
+
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="25dp">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_person_pin_black_24dp" />
+
+            <TextView
+                android:id="@+id/text_nomeUtenteProfilo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:text="nome utente"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal"
+            android:paddingLeft="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_person_pin_black_24dp"/>
+            <TextView
+                android:id="@+id/cognomeUtenteprofilo"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:text="cognome"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="25dp"
             android:orientation="horizontal"
             android:paddingLeft="25dp"
             android:layout_width="match_parent"
@@ -142,51 +183,13 @@
                 android:layout_height="36dp"
                 android:src="@drawable/ic_email_black_24dp"/>
             <TextView
-                android:id="@+id/text_nome"
+                android:id="@+id/textEmailProfilo"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
-                android:text="Wiliam@gmail.com"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="25dp"
-            android:orientation="horizontal"
-            android:paddingLeft="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_phone_android_black_24dp"/>
-            <TextView
-                android:id="@+id/text_cognome"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="+266 225 225"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="25dp"
-            android:orientation="horizontal"
-            android:paddingLeft="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_group_add_black_24dp"/>
-            <TextView
-                android:id="@+id/text_email"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="Add to group"/>
+                android:text="email"/>
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="25dp"
@@ -216,6 +219,7 @@
         android:layout_marginTop="6dp"
         android:background="@drawable/buttonshape"
         android:text="Follow Me"
-        android:textColor="#fff" />
+        android:textColor="#fff"
+        android:id="@+id/bottoneModificaFoto"/>
 
 </LinearLayout>

@@ -97,9 +97,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 jsonParse();
-
-                /*Log.d("TEST","X " + String.valueOf(textViewResult));
-                 */
             }
         });
 
@@ -111,6 +108,9 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, ProfiloActivity.class));
             }
         });
+
+        final Intent intentP = getIntent();
+        usernameProva = intentP.getStringExtra("username");
     }
 
     @Override
