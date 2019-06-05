@@ -58,7 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean checkUser(String username, String password) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("select ID from registeruser where " + COL_2 + "='" + username + "'" + " and " + COL_3 + "='" + password + "'" , null);
+        Cursor cursor = db.rawQuery("select ID from registeruser where " + COL_2 + "='" + username + "'" + " and " + COL_3 + "='" + password + "'", null);
         int count = cursor.getCount();
         cursor.close();
         db.close();
@@ -128,7 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor checkPresenceInFavourites(String pUserName, int pId) {
-        Cursor cursor = this.getWritableDatabase().query("userFavourite", new String[]{"idfavourite"}, "username = " + pUserName + " and " + "idfavourite = " + String.valueOf(pId), null, null, null, null, null);
+        Cursor cursor = this.getWritableDatabase().query("userFavourite", new String[]{"idfavourite"}, "username ='" + pUserName + "'" + " and " + "idfavourite = " + String.valueOf(pId), null, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }

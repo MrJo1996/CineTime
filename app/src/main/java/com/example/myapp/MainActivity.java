@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.logout:
-                //prendo username dalla login
+                //username dalla login
                 Intent prendoUserName = getIntent();
                 userName = prendoUserName.getStringExtra("username");
                 //setta a true l'utente loggato

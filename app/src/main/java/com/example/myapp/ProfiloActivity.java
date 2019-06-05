@@ -33,7 +33,6 @@ public class ProfiloActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profilo);
 
         final Intent intent = getIntent();
-        final String userNamePassed = intent.getStringExtra("username");
 
         userNameUtente = findViewById(R.id.userNameUtente);
         final TextView nomeUtente = findViewById(R.id.text_nomeUtenteProfilo);
