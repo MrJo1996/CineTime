@@ -32,8 +32,6 @@ public class ProfiloActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profilo);
 
-        final Intent intent = getIntent();
-
         userNameUtente = findViewById(R.id.userNameUtente);
         final TextView nomeUtente = findViewById(R.id.text_nomeUtenteProfilo);
         final TextView cognomeUtente = findViewById(R.id.cognomeUtenteprofilo);
