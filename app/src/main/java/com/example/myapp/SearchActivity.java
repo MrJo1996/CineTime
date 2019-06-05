@@ -1,5 +1,6 @@
 package com.example.myapp;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -38,7 +39,7 @@ public class SearchActivity extends AppCompatActivity {
     EditText searchEditText;
     ImageButton imgBtnSearch;
 
-    //var titolo Film o Serie
+    //var titolo Film
     String titoli[];
     String descrizioni[];
     String postersUrl[];
@@ -48,6 +49,8 @@ public class SearchActivity extends AppCompatActivity {
     int numVoti[];
     int ids[];
 
+    protected boolean isProgressShowing = false;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class SearchActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
         listView = findViewById(R.id.listViewSearch);
         searchEditText = findViewById(R.id.searchEdiText);
         imgBtnSearch = findViewById(R.id.btnSearch);
@@ -65,6 +69,13 @@ public class SearchActivity extends AppCompatActivity {
         imgBtnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //spinner avanzamento richiesta
+                dialog = new Dialog(SearchActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
+                View v1 = SearchActivity.this.getLayoutInflater().inflate(R.layout.progressbar, null);
+                dialog.setContentView(v1);
+                dialog.show();
+
                 urlReq = "https://api.themoviedb.org/3/search/multi?api_key=adf4e37d8d2e065dcfac0c49267b47db&language=it-IT&query="
                         + searchEditText.getText() + "&page=1&include_adult=false";
                 //req
@@ -72,7 +83,9 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        //TODO set click su item listview, da spostare giu quando si fa la richiesta
+        final Intent intent = getIntent();
+        final String userNamePassed = intent.getStringExtra("username");
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -84,9 +97,17 @@ public class SearchActivity extends AppCompatActivity {
                 intent.putExtra("rating", ratings[position]);
                 intent.putExtra("vote_count", numVoti[position]);
                 intent.putExtra("ids", ids[position]);
-                Toast.makeText(SearchActivity.this, "ID: " + ids[position], Toast.LENGTH_LONG).show();
+                intent.putExtra("username", userNamePassed);
 
                 startActivity(intent);
+            }
+        });
+
+        ImageButton imgBtnBack = findViewById(R.id.backSearch);
+        imgBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }
@@ -114,6 +135,8 @@ public class SearchActivity extends AppCompatActivity {
 
                             //ciclo for per settare i nostri oggetti
                             if (jsonArray.length() != 0) {
+                                //stoppo spinner caricamento
+                                dialog.dismiss();
                                 for (int i = 0; i < titoli.length; i++) {
                                     if (jsonArray.getJSONObject(i).has("name")) {
                                         titoli[i] = jsonArray.getJSONObject(i).getString("name");
@@ -133,9 +156,11 @@ public class SearchActivity extends AppCompatActivity {
                                 }
                             } else {
                                 //Controllo se c'è o meno un risultato per la ricerca
+                                //stop spinner
+                                dialog.dismiss();
                                 Toast.makeText(SearchActivity.this, "Nessun risultato trovato per tale titolo.", Toast.LENGTH_LONG).show();
                             }
-                            //creazione adapter per la view passandogli param durante la req, prima dava NPE(non avvalorava gli array)
+                            //creazione adapter per la view passandogli param durante la req (NPE checked)
                             MySearchAdapter mySearchAdapter = new MySearchAdapter(context, titoli, descrizioni, postersUrl);
                             listView.setAdapter(mySearchAdapter);
                         } catch (JSONException e) {
@@ -145,7 +170,9 @@ public class SearchActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //risposta va male
+                //error
+                //stop spinner
+                dialog.dismiss();
                 Toast.makeText(SearchActivity.this, "Qualcosa è andato storto, controlla la tua connessione internet", Toast.LENGTH_SHORT).show();
                 error.printStackTrace();
             }
@@ -155,10 +182,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     //handler assegnazione risorse alla view
-    // mettere qui i valori da passare alla visualizzazione
     class MySearchAdapter extends ArrayAdapter {
         //variabili d'appoggio INTERNE che saranno setatte in base a quelle che gli vengono passate come param
-        //il passagio avviene durante l'esecuzione della req
+        //il passagio avviene durante l'esecuzione della req con appunto la creazione dell'adapter
         Context context;
         String rTitle[];
         String rDesc[];
@@ -190,7 +216,9 @@ public class SearchActivity extends AppCompatActivity {
             if (rDesc[position].isEmpty()) {
                 myDesc.setText(getString(R.string.noDescription));
             } else {
-                myDesc.setText(rDesc[position].substring(0,100) + "...");
+                if (rDesc[position].length() > 100) {
+                    myDesc.setText(rDesc[position].substring(0, 100) + "...");
+                }
             }
 
             urlImg = "https://image.tmdb.org/t/p/w500" + rImgs[position];

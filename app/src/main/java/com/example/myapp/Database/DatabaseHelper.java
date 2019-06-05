@@ -5,10 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Movie;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "register.db";
     public static final String TABLE_NAME = "registeruser";
+    public static final String TABLE_FAV = "userFavourite";
     public static final String COL_1 = "ID";
     public static final String COL_2 = "username";
     public static final String COL_3 = "password";
@@ -24,19 +26,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, username TEXT, password TEXT, nome TEXT, cognome TEXT, email TEXT, logged INTEGER)");
-        sqLiteDatabase.execSQL("CREATE TABLE favourite (idfavourite INTEGER, idUtente INTEGER, username TEXT)");
+        // sqLiteDatabase.execSQL("CREATE TABLE favourite (idfavourite INTEGER, idUtente INTEGER, username TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS userFavourite (idfavourite INTEGER, username TEXT, titoloFav TEXT, posterPathFav TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL(" DROP TABLE IF EXISTS " + TABLE_NAME);
+
+        //sqLiteDatabase.execSQL(" DROP TABLE IF EXISTS " + TABLE_FAV);
         onCreate(sqLiteDatabase);
     }
 
     public long addUser(String user, String password, String nome, String cognome, String email, int logged) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        //String query = ("INSERT INTO registeruser VALUES ("+
         ContentValues contentValues = new ContentValues();
         contentValues.put("username", user);
         contentValues.put("password", password);
@@ -44,8 +48,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("cognome", cognome);
         contentValues.put("email", email);
         contentValues.put("logged", logged);
+
+        // insert row
         long res = db.insert("registeruser", null, contentValues);
+
         db.close();
+
+        // return inserted row id
         return res;
     }
 
@@ -71,13 +80,66 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return this.getWritableDatabase().update("registeruser", contentValues, "username = " + pUsername, null);
     }
 
-    public Cursor getUtente(String pUsername) {
-        Cursor cursor = this.getWritableDatabase().query("registeruser", new String[]{"username", "nome", "cognome", "email"}, "username = " + pUsername, null, null, null, null, null);
+    public Cursor getUtente(int pLog) {
+        Cursor cursor = this.getWritableDatabase().query("registeruser", new String[]{"username", "nome", "cognome", "email"}, "logged = " + pLog, null, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
         //restituirà tutti i campi forniti nella query e saranno accessibili tramite indice di colonna
         // (ordine definito durante la query) - Esempio di utilizzo in "ProfileActivity"
+
+        return cursor;
+    }
+
+    /*
+     *
+     * GESTIONE PREFERITI
+     *
+     */
+    public long addToFavorites(String pUserName, int pIdTitolo, String pTitoloFav, String pPosterPath) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("username", pUserName);
+        contentValues.put("idfavourite", pIdTitolo);
+        contentValues.put("titoloFav", pTitoloFav);
+        contentValues.put("posterPathFav", pPosterPath);
+        // insert row - ritorna l'id della row inserita (-1 se c'è errore)
+        long res = db.insert("userFavourite", null, contentValues);
+        db.close();
+        // return newly inserted row id
+        return res;
+    }
+
+    public int removeFromFavorites(String pUserName, int pIdTitolo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int result = db.delete("userFavourite", "idfavourite = ? AND username = ?", new String[]{String.valueOf(pIdTitolo), pUserName});
+        db.close();
+
+        // return numero di righe eliminate
+        return result;
+    }
+
+    public Cursor getAllFavourites(String pUserName) {
+        Cursor cursor = this.getWritableDatabase().query("userFavourite", new String[]{"idfavourite", "titoloFav", "posterPathFav"}, "username = " + pUserName, null, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        //restituirà tutti i campi forniti nella query e saranno accessibili tramite indice di colonna
+        // (ordine definito durante la query) - Esempio di utilizzo in "ProfileActivity"
+
+        return cursor;
+    }
+
+    public Cursor checkPresenceInFavourites(String pUserName, int pId) {
+        Cursor cursor = this.getWritableDatabase().query("userFavourite", new String[]{"idfavourite"}, "username = " + pUserName + " and " + "idfavourite = " + String.valueOf(pId), null, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        //restituirà tutti i campi forniti nella query e saranno accessibili tramite indice di colonna
+        // (ordine definito durante la query) - Esempio di utilizzo in "DetailsActivity"
 
         return cursor;
     }

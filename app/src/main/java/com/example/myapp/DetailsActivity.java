@@ -1,29 +1,27 @@
 package com.example.myapp;
 
-import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.myapp.Database.DatabaseHelper;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 public class DetailsActivity extends AppCompatActivity {
     String posterUrl;
     ImageButton aggiungiAiPreferitiBtn;
-    ListView listFavoriteView;
-    //set a true se premuto aggiungi a preferiti
     boolean preferiti = false;
-
+    DatabaseHelper db;
+    String userNamePassed;
+    int id;
+    String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,50 +29,39 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
 
         final Intent intent = getIntent();
+        userNamePassed = intent.getStringExtra("username");
 
-        final String title = intent.getStringExtra("title");
+        title = intent.getStringExtra("title");
         String overview = intent.getStringExtra("overview");
         posterUrl = intent.getStringExtra("urlImg");
         String releaseDate = intent.getStringExtra("date");
         Double ratings = intent.getDoubleExtra("rating", 0.0);
         int numVoti = intent.getIntExtra("vote_count", 0);
-        final int id = intent.getIntExtra("ids", 0);
+        id = intent.getIntExtra("ids", 0);
 
         //bottone per aggiungere ai preferiti
+        db = new DatabaseHelper(this);
+
         aggiungiAiPreferitiBtn = (ImageButton) findViewById(R.id.aggiungiAiPreferiti);
-        aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
+        if (isFavourite()) {
+            this.preferiti = true;
+            aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
+
+        } else {
+            this.preferiti = false;
+            aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
+        }
         aggiungiAiPreferitiBtn.setOnClickListener(new View.OnClickListener() {
-                                                      @Override
-                                                      public void onClick(View view) {
-                                                          if (!preferiti) {
-                                                              //per cambiare il cuore vuoto in cuore pieno + TODO aggiungere ai preferiti
-                                                              aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
-                                                              preferiti = true;
-
-
-
-                                                               /*ArrayList<ElementoFilmSerie> titoloPref = new ArrayList<ElementoFilmSerie>();
-                                                               ElementoFilmSerie elemento = new ElementoFilmSerie(id,title,posterUrl);
-                                                               titoloPref.add(elemento);*/
-                                                            /*  Intent passData = new Intent(DetailsActivity.this, FavouriteSerieActivity.class);
-                                                              passData.putExtra("id", id);
-                                                              passData.putExtra("title", title);
-                                                              passData.putExtra("poster", posterUrl);
-                                                              startActivity(passData);*/
-                                                          } else {
-                                                              //per cambiare il cuore pieno in cuore vuoto + TODO eliminare dai preferiti
-                                                              aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
-                                                              preferiti = false;
-                                                          }
-                                                      }
-                                                  }
-        );
+            @Override
+            public void onClick(View view) {
+                manageFavourites();
+            }
+        });
 
         final ImageView imgPosterDetail = findViewById(R.id.imgPosterDetail);
         TextView txtTitleDetail = findViewById(R.id.txtTitleDetail);
         TextView txtOverView = findViewById(R.id.txtOverView);
-        /*TextView txtNumVoti = findViewById(R.id.votes);
-         */
+
         TextView txtRatings = findViewById(R.id.ratings);
         TextView txtReleaseDateDetail = findViewById(R.id.txtReleaseDateDetail);
         TextView titoloTolbar = findViewById(R.id.toolbar_title);
@@ -85,7 +72,6 @@ public class DetailsActivity extends AppCompatActivity {
         } else {
             txtOverView.setText(overview);
         }
-
 
         if (numVoti == 1) {
             txtRatings.setText("Rating: " + ratings.toString() + "/10 (1 voto)");
@@ -108,6 +94,45 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean isFavourite() {
+        db.getWritableDatabase();
+        Cursor cursor = db.checkPresenceInFavourites(userNamePassed, id);
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            //presente
+            // Log.d("PRESENTE", "SI " + String.valueOf(cursor.getCount()));
+            return true;
+        } else {
+            //assente
+            //Log.d("PRESENTE", "NO " + String.valueOf(cursor.getCount()));
+            return false;
+        }
+    }
+
+    private void manageFavourites() {
+        if (!preferiti) {
+            //cambio img btn in cuore pieno
+            long val = db.addToFavorites(userNamePassed, id, title, posterUrl);
+            if (val > 0) {
+                aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
+                preferiti = true;
+                Toast.makeText(DetailsActivity.this, "Aggiunto ai preferiti.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(DetailsActivity.this, "Impossibile aggiungere ai preferiti, riprovare.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            //cambio img btn in cuore vuoto
+            int nRowDeleted = db.removeFromFavorites(userNamePassed, id);
+            if (nRowDeleted > 0) {
+                aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
+                preferiti = false;
+                Toast.makeText(DetailsActivity.this, "'" + title + "'" + " rimosso dai preferiti.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(DetailsActivity.this, "Impossibile rimuovere dai preferiti, riprovare.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 

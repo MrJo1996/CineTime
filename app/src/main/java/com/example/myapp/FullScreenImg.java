@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+
 //Facilitare visualizzazione full screen di un poster
 public class FullScreenImg extends AppCompatActivity {
 

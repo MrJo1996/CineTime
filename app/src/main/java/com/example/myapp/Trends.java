@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,37 +44,39 @@ public class Trends extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_trends);
+
         //imposto il context da passare durante la req
         this.context = this;
         //fetch data code req
         this.mQueue = Volley.newRequestQueue(this);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trends);
-
         listView = findViewById(R.id.listViewTrends);
-
-     /*   Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
 
         //req trends
         urlReq = "https://api.themoviedb.org/3/movie/upcoming?api_key=adf4e37d8d2e065dcfac0c49267b47db&language=it&region=it";
         jsonParse();
 
+        ImageButton imgBtnBack = findViewById(R.id.backUpComing);
+        imgBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void jsonParse() {
-
         //CREAZIONE RICHIESTA
-        //essendo un JSon ho bisogno di un handler della richiesta
-        //(se era un array di JSon avrei usato un altro apposito -> JsonArrayRequest)
+
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlReq, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         //risposta va a buon fine
                         try {
-                            //"results" è  il nome dell'array JSon che contiene tutti gli oggetti JSon
+                            //"results" -> nome array
                             jsonArray = response.getJSONArray("results");
                             //setto dimensione singoli array
                             titoli = new String[jsonArray.length()];

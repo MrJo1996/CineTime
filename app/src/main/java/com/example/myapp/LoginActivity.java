@@ -43,23 +43,24 @@ public class LoginActivity extends AppCompatActivity {
         mButtonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                db.getReadableDatabase();
                 String user = mTextUsername.getText().toString().trim();
                 String pwd = mTextPassword.getText().toString().trim();
                 Boolean res = db.checkUser(user, pwd);
                 if (res == true) {
                     //setta a true l'utente loggato
-                    int check;
                     db.setStatusUser(1, user);
+                    /*int check;
                     check = db.setStatusUser(1, user);
                     if (check != 0) {
                         Toast.makeText(LoginActivity.this, "SETTATO A LOGGATO", Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
                     Dialog dialog = new Dialog(LoginActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
                     View v = LoginActivity.this.getLayoutInflater().inflate(R.layout.progressbar, null);
                     dialog.setContentView(v);
                     dialog.show();
 
-                    //passo nome utente
+                    //passo nome utente prova
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("username", user);
                     startActivity(intent);

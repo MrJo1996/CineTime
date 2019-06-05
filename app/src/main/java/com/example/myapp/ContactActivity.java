@@ -18,7 +18,7 @@ public class ContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Codice per mostrare l'activity a schermo intero (il theme dell'xml deve essere impostato su "NOACTIONBAR")
+        //full screen
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -37,7 +37,8 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     private void sendMail() {
-        String recipientList = "serietimeproject@gmail.com";
+        //TODO cambiare indirizzo email
+        String recipientList = "cinetimehelp@gmail.com";
         String[] recipients = recipientList.split(",");
 
         String subject = mEditTextSubject.getText().toString();

@@ -9,25 +9,22 @@
     <!--   android:background="@color/matte_black" vedere magari il matteblack come colore-->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="2dp">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!--  <android.support.v7.widget.Toolbar
-
-                  android:background="@color/colorPrimary"
-                  app:title="@string/app_name"
-                  app:titleTextColor="@color/colorPrimaryDark" />-->
-
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbarDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/darker_gray">
+                android:background="@color/colorAccent">
 
                 <TextView
                     android:id="@+id/toolbar_title"
@@ -36,6 +33,7 @@
                     android:gravity="center"
                     android:text="Titolo"
                     android:textAlignment="center"
+                    android:textColor="@android:color/white"
                     android:textSize="30sp"
                     android:textStyle="bold"
                     tools:layout_editor_absoluteX="16dp"
@@ -46,13 +44,13 @@
             <ImageView
                 android:id="@+id/imgPosterDetail"
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
+                android:layout_height="261dp"
 
                 android:layout_margin="10dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbarDetail" />
 
@@ -60,9 +58,9 @@
                 android:id="@+id/aggiungiAiPreferiti"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginBottom="20dp"
                 android:layout_marginStart="300dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/ic_favorite_border_black_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -138,7 +136,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ratingImg" />
 
+
         </android.support.constraint.ConstraintLayout>
+
+
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

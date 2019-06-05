@@ -21,7 +21,6 @@ public class RegisterActivity extends AppCompatActivity {
     EditText mTextNome;
     EditText mTextCognome;
     EditText mTextEmail;
-
     Button mButtonRegister;
     TextView mTextViewLogin;
 
@@ -56,7 +55,6 @@ public class RegisterActivity extends AppCompatActivity {
                 String user = mTextUsername.getText().toString().trim();
                 String pwd = mTextPassword.getText().toString().trim();
                 String cnf_pwd = mTextCnfPassword.getText().toString().trim();
-
                 String name = mTextNome.getText().toString().trim();
                 String surname = mTextCognome.getText().toString().trim();
                 String mail = mTextEmail.getText().toString().trim();
