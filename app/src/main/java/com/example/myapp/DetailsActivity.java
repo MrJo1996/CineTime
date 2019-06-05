@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,7 +18,7 @@ public class DetailsActivity extends AppCompatActivity {
     ImageButton aggiungiAiPreferitiBtn;
     boolean preferiti = false;
     DatabaseHelper db;
-    String userNamePassed;
+    String username;
     int id;
     String title;
 
@@ -29,7 +28,6 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
 
         final Intent intent = getIntent();
-        userNamePassed = intent.getStringExtra("username");
 
         title = intent.getStringExtra("title");
         String overview = intent.getStringExtra("overview");
@@ -42,7 +40,11 @@ public class DetailsActivity extends AppCompatActivity {
         //bottone per aggiungere ai preferiti
         db = new DatabaseHelper(this);
 
+        //Retriving logged user
+        getLoggedUser();
+
         aggiungiAiPreferitiBtn = (ImageButton) findViewById(R.id.aggiungiAiPreferiti);
+
         if (isFavourite()) {
             this.preferiti = true;
             aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
@@ -98,7 +100,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private boolean isFavourite() {
         db.getWritableDatabase();
-        Cursor cursor = db.checkPresenceInFavourites(userNamePassed, id);
+        Cursor cursor = db.checkPresenceInFavourites(username, id);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             //presente
@@ -114,7 +116,7 @@ public class DetailsActivity extends AppCompatActivity {
     private void manageFavourites() {
         if (!preferiti) {
             //cambio img btn in cuore pieno
-            long val = db.addToFavorites(userNamePassed, id, title, posterUrl);
+            long val = db.addToFavorites(username, id, title, posterUrl);
             if (val > 0) {
                 aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
                 preferiti = true;
@@ -124,7 +126,7 @@ public class DetailsActivity extends AppCompatActivity {
             }
         } else {
             //cambio img btn in cuore vuoto
-            int nRowDeleted = db.removeFromFavorites(userNamePassed, id);
+            int nRowDeleted = db.removeFromFavorites(username, id);
             if (nRowDeleted > 0) {
                 aggiungiAiPreferitiBtn.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
                 preferiti = false;
@@ -133,6 +135,15 @@ public class DetailsActivity extends AppCompatActivity {
                 Toast.makeText(DetailsActivity.this, "Impossibile rimuovere dai preferiti, riprovare.", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void getLoggedUser() {
+        db.getWritableDatabase();
+        Cursor cursor = db.getUtente(1);
+        cursor.moveToFirst();
+
+        //setto var che sarà passata alla textView Welcome
+        username = (cursor.getString(0));
     }
 
 
