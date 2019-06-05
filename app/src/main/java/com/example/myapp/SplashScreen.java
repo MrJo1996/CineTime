@@ -43,6 +43,8 @@ public class SplashScreen extends AppCompatActivity {
         splash.start();
     }
 
+    //Funzione che verifica se l'utente non ha effettuato il logout prima di chiudere l'app
+    //così facendo all'avvio sarà riportato alla home senza che gli siano richieste le credenziali di accesso
     private boolean isLogged() {
         dbManager.getWritableDatabase();
         Cursor cursor = dbManager.getUtente(1);
