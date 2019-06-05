@@ -59,11 +59,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean checkUser(String username, String password) {
-        String[] columns = {COL_1};
-        SQLiteDatabase db = getReadableDatabase();
+        /*String[] columns = {COL_1};
+
         String selection = COL_2 + "=?" + " and " + COL_3 + "=?";
-        String[] selectionArgs = {username, password};
-        Cursor cursor = db.query(TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+        String[] selectionArgs = {username, password};*/
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select ID from registeruser where " + COL_2 + "='" + username + "'" + " and " + COL_3 + "='" + password + "'" , null);
         int count = cursor.getCount();
         cursor.close();
         db.close();
@@ -77,7 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public int setStatusUser(int pLog, String pUsername) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("logged", pLog);
-        return this.getWritableDatabase().update("registeruser", contentValues, "username = " + pUsername, null);
+        return this.getWritableDatabase().update("registeruser", contentValues, "username ='" + pUsername + "'", null);
     }
 
     public Cursor getUtente(int pLog) {
