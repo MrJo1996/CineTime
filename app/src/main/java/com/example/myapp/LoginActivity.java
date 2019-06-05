@@ -60,10 +60,6 @@ public class LoginActivity extends AppCompatActivity {
                     dialog.setContentView(v);
                     dialog.show();
 
-                    //passo nome utente prova
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("username", user);
-                    startActivity(intent);
                 } else {
                     Toast.makeText(LoginActivity.this, "Credenziali errate.", Toast.LENGTH_SHORT).show();
                 }

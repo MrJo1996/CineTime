@@ -20,6 +20,7 @@ public class SplashScreen extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
 
+        //check se l'utente è già loggato
         dbManager = new DatabaseHelper(this);
 
         //SplashScreen

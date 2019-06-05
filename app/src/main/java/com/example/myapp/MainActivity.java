@@ -1,6 +1,7 @@
 package com.example.myapp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity
 
         db = new DatabaseHelper(this);
 
+        //Retriving logged user
+        getLoggedUser();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,10 +51,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        //username
-        final Intent intentP = getIntent();
-        usernamePassed = intentP.getStringExtra("username");
 
         //QUOTES
         quotes = new Quotes();
@@ -87,7 +87,16 @@ public class MainActivity extends AppCompatActivity
 
         //Set nomeUtente WelcomeView
         TextView textViewWelcome = findViewById(R.id.textViewWelcome);
-        textViewWelcome.setText("Bentornato " + usernamePassed + "!");
+        textViewWelcome.setText("Bentornato " + userName + "!");
+    }
+
+    private void getLoggedUser() {
+        db.getWritableDatabase();
+        Cursor cursor = db.getUtente(1);
+        cursor.moveToFirst();
+
+        //setto var che sarà passata alla textView Welcome
+        userName = (cursor.getString(0));
     }
 
 
