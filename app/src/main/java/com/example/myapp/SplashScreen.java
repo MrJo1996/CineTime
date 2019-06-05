@@ -48,11 +48,14 @@ public class SplashScreen extends AppCompatActivity {
     //così facendo all'avvio sarà riportato alla home senza che gli siano richieste le credenziali di accesso
     private boolean isLogged() {
         dbManager.getWritableDatabase();
-        Cursor cursor = dbManager.getUtente(1);
+        Cursor cursor = dbManager.isLogged(1);
         cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
+
+        if (cursor.getInt(0) == 1) {
+            //esiste un utente loggato -> riporto alla home senza richiedere le credenziali
             return true;
         } else {
+            //non esiste utente loggato -> riporto alla login cosicchè possa inserire le credenziali per effettuare l'accesso
             return false;
         }
     }

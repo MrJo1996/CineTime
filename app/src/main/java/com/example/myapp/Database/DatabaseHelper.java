@@ -82,6 +82,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         //restituirà tutti i campi forniti nella query e saranno accessibili tramite indice di colonna
         // (ordine definito durante la query) - Esempio di utilizzo in "ProfileActivity"
+        //utilizzata anche per verificare utente logged
+
+        return cursor;
+    }
+
+    public Cursor isLogged(int pLog) {
+        Cursor cursor = this.getWritableDatabase().query("registeruser", new String[]{"username"}, "logged = " + pLog, null, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        //restituirà tutti i campi forniti nella query e saranno accessibili tramite indice di colonna
+        // (ordine definito durante la query) - Esempio di utilizzo in "ProfileActivity"
+        //utilizzata per verificare utente logged per fare in modo che alla chiusura dell'app
+        // (senza che viene effettuato il logout) l'utente non debba reinserire le credenziali
 
         return cursor;
     }
