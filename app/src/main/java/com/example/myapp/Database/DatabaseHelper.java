@@ -26,14 +26,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, username TEXT, password TEXT, nome TEXT, cognome TEXT, email TEXT, logged INTEGER)");
-        // sqLiteDatabase.execSQL("CREATE TABLE favourite (idfavourite INTEGER, idUtente INTEGER, username TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS userFavourite (idfavourite INTEGER, username TEXT, titoloFav TEXT, posterPathFav TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL(" DROP TABLE IF EXISTS " + TABLE_NAME);
-
         //sqLiteDatabase.execSQL(" DROP TABLE IF EXISTS " + TABLE_FAV);
         onCreate(sqLiteDatabase);
     }
@@ -59,10 +57,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean checkUser(String username, String password) {
-        /*String[] columns = {COL_1};
-
-        String selection = COL_2 + "=?" + " and " + COL_3 + "=?";
-        String[] selectionArgs = {username, password};*/
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("select ID from registeruser where " + COL_2 + "='" + username + "'" + " and " + COL_3 + "='" + password + "'" , null);
         int count = cursor.getCount();
@@ -123,7 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getAllFavourites(String pUserName) {
-        Cursor cursor = this.getWritableDatabase().query("userFavourite", new String[]{"idfavourite", "titoloFav", "posterPathFav"}, "username = " + pUserName, null, null, null, null, null);
+        Cursor cursor = this.getWritableDatabase().query("userFavourite", new String[]{"idfavourite", "titoloFav", "posterPathFav"}, "username ='" + pUserName + "'", null, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
