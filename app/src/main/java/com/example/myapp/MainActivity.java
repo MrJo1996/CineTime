@@ -180,10 +180,7 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.logout:
-                //username dalla login
-                Intent prendoUserName = getIntent();
-                userName = prendoUserName.getStringExtra("username");
-                //setta a true l'utente loggato
+                //setta ad unlogged l'utente loggato
                 db.setStatusUser(0, userName);
                 /*int check;
                 check = db.setStatusUser(0, userName);

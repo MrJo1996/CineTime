@@ -60,6 +60,8 @@ public class LoginActivity extends AppCompatActivity {
                     dialog.setContentView(v);
                     dialog.show();
 
+                    Intent goToHome = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(goToHome);
                 } else {
                     Toast.makeText(LoginActivity.this, "Credenziali errate.", Toast.LENGTH_SHORT).show();
                 }
