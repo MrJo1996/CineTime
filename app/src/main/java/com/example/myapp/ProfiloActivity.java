@@ -33,15 +33,16 @@ public class ProfiloActivity extends AppCompatActivity {
     TextView userNameUtente;
 
     Context mContext;
-    SharedPreferences myPrefrence;
-    String namePreferance = "name";
-    String imagePreferance = "image";
+
     int RESULT_LOAD_IMG = 1;
+    int idUserLogged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profilo);
+
+        mContext = this;
 
         userNameUtente = findViewById(R.id.userNameUtente);
         final TextView nomeUtente = findViewById(R.id.text_nomeUtenteProfilo);
@@ -64,10 +65,21 @@ public class ProfiloActivity extends AppCompatActivity {
         cognomeUtente.setText("Cognome: " + cursor.getString(2));
         emailUtente.setText("Email: " + cursor.getString(3));
 
+        //Setting immagine profilo -> se presente imgEncoded nelle SharedPref poichè
+        // nell'onActivityResult salvo l'img convertendolo in stringa nelle sharedP
+        //Utilizzo l'ID dell'utente per creare una voce apposita nelle sharedP per tenere traccia della img
+        //l'ID dell'utente viene concatenato alla "key" nel momento del put nelle SharedP e nel momento del get dalle SharedP
+        idUserLogged = (cursor.getInt(4));
+        String encodedImg = PreferenceManager.getDefaultSharedPreferences(mContext).getString("IMAGE" + String.valueOf(idUserLogged), null);
+        if (encodedImg != null) {
+            Bitmap imgP = decodeBase64(encodedImg);
+            profileIMG.setImageBitmap(imgP);
+        } else {
+            //null
+        }
+
         //Set numero film visti
         numFilm.setText(String.valueOf(setWatchedFilms()));
-
-        mContext = this;
 
         btnShareNumFilm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,16 +114,6 @@ public class ProfiloActivity extends AppCompatActivity {
             }
         });
 
-        //Setto immagine profilo se presente imgEncoded nelle SharedPref poichè
-        // nell'onActivityResult salvo l'img convertendolo in stringa nelle sharedP
-        String encodedImg = PreferenceManager.getDefaultSharedPreferences(mContext).getString("IMAGE", null);
-        if (encodedImg != null) {
-            Bitmap imgP = decodeBase64(encodedImg);
-            profileIMG.setImageBitmap(imgP);
-        } else {
-            //null
-        }
-
     }
 
     @Override
@@ -129,7 +131,7 @@ public class ProfiloActivity extends AppCompatActivity {
                 //Converto in Stringa
                 String bitMapEncoded = encodeTobase64(selectedImage);
                 //Salvo bitmap encoded e lo salvo nelle SharedPref
-                PreferenceManager.getDefaultSharedPreferences(mContext).edit().putString("IMAGE", bitMapEncoded).apply();
+                PreferenceManager.getDefaultSharedPreferences(mContext).edit().putString("IMAGE" + String.valueOf(idUserLogged), bitMapEncoded).apply();
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

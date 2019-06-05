@@ -76,7 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getUtente(int pLog) {
-        Cursor cursor = this.getWritableDatabase().query("registeruser", new String[]{"username", "nome", "cognome", "email"}, "logged = " + pLog, null, null, null, null, null);
+        Cursor cursor = this.getWritableDatabase().query("registeruser", new String[]{"username", "nome", "cognome", "email", "ID"}, "logged = " + pLog, null, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
