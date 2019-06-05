@@ -44,8 +44,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 db.getReadableDatabase();
+
                 String user = mTextUsername.getText().toString().trim();
                 String pwd = mTextPassword.getText().toString().trim();
+
                 Boolean res = db.checkUser(user, pwd);
                 if (res == true) {
                     //setta a true l'utente loggato
