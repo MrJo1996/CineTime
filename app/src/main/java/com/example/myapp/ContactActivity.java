@@ -37,7 +37,6 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     private void sendMail() {
-        //TODO cambiare indirizzo email
         String recipientList = "cinetimehelp@gmail.com";
         String[] recipients = recipientList.split(",");
 

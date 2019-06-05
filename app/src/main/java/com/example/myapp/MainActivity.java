@@ -74,8 +74,7 @@ public class MainActivity extends AppCompatActivity
         textViewFilm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO mettere il vero url
-                String urlDownload = "https://play.google.com/store/apps/details?id=com.supercell.brawlstars";
+                String urlDownload = "https://drive.google.com/open?id=1Hj5TW2dYEy1ZeqJrJrGbNzTgSPRZ1-nF";
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 String object = "CineTime";
@@ -153,8 +152,7 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_share:
-                //TODO urlDownload da cambiare con quello che sarà il vero url
-                String urlDownload = "https://play.google.com/store/apps/details?id=com.supercell.brawlstars";
+                String urlDownload = "https://drive.google.com/open?id=1Hj5TW2dYEy1ZeqJrJrGbNzTgSPRZ1-nF";
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 String object = "CineTime";

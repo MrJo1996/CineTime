@@ -93,8 +93,7 @@ public class ProfiloActivity extends AppCompatActivity {
         btnShareNumFilm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO mettere il vero url
-                String urlDownload = "https://play.google.com/store/apps/details?id=com.supercell.brawlstars";
+                String urlDownload = "https://drive.google.com/open?id=1Hj5TW2dYEy1ZeqJrJrGbNzTgSPRZ1-nF";
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 String object = "CineTime";
