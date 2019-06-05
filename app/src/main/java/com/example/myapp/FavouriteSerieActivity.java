@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 
 public class FavouriteSerieActivity extends AppCompatActivity {
     DatabaseHelper db;
-    String userNamePassed;
+    String username;
 
     String titoli[];
     String postersUrl[];
@@ -35,22 +35,22 @@ public class FavouriteSerieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite_serie);
 
-        final Intent intent = getIntent();
-        userNamePassed = intent.getStringExtra("username");
 
         this.context = this;
         listViewFavourite = findViewById(R.id.listViewFavourites);
 
-        //Recupero i preferiti dal Db
+        //Recupero i preferiti dal Db in base all'utente loggato
         db = new DatabaseHelper(this);
+        getLoggedUser();
         getFavourites();
+
         //Creazione adapter per la view passandogli param durante la req
         MySearchAdapter mySearchAdapter = new MySearchAdapter(context, titoli, postersUrl);
         listViewFavourite.setAdapter(mySearchAdapter);
         listViewFavourite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int remove = db.removeFromFavorites(userNamePassed, ids[position]);
+                int remove = db.removeFromFavorites(username, ids[position]);
                 if (remove > 0) {
                     //Return num di row eliminate dalla delete
                     Toast.makeText(FavouriteSerieActivity.this, "'" + titoli[position] + "'" + " rimosso dai preferiti.", Toast.LENGTH_SHORT).show();
@@ -71,9 +71,18 @@ public class FavouriteSerieActivity extends AppCompatActivity {
         });
     }
 
+    private void getLoggedUser() {
+        db.getWritableDatabase();
+        Cursor cursor = db.getUtente(1);
+        cursor.moveToFirst();
+
+        //setto var che sarà passata alla textView Welcome
+        username = (cursor.getString(0));
+    }
+
     private void getFavourites() {
         db.getWritableDatabase();
-        Cursor cursor = db.getAllFavourites(userNamePassed);
+        Cursor cursor = db.getAllFavourites(username);
         cursor.moveToFirst();
 
         //Setto dimensione degli array che contengono i dati degli elementi
