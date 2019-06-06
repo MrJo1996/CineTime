@@ -59,21 +59,7 @@ public class SplashScreen extends AppCompatActivity {
             return false;
         }
     }
-   /* //Funzione che verifica se l'utente non ha effettuato il logout prima di chiudere l'app
-    //così facendo all'avvio sarà riportato alla home senza che gli siano richieste le credenziali di accesso
-    private boolean isLogged() {
-        dbManager.getWritableDatabase();
-        Cursor cursor = dbManager.isLogged(1);
-        cursor.moveToFirst();
 
-        if (cursor.getInt(0) == 1) {
-            //esiste un utente loggato -> riporto alla home senza richiedere le credenziali
-            return true;
-        } else {
-            //non esiste utente loggato -> riporto alla login cosicchè possa inserire le credenziali per effettuare l'accesso
-            return false;
-        }
-    }*/
     @Override
     protected void onPause() {
         super.onPause();
